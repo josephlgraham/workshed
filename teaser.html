@@ -458,7 +458,13 @@
       font-size: 0.68rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--ink-muted);
+      color: var(--rust);
+      text-shadow: 0 0 10px rgba(var(--rust-rgb), 0.55), 0 0 20px rgba(var(--rust-rgb), 0.3);
+      animation: ws-footer-glow 3.2s ease-in-out infinite;
+    }
+    @keyframes ws-footer-glow {
+      0%, 100% { text-shadow: 0 0 8px rgba(var(--rust-rgb), 0.4), 0 0 16px rgba(var(--rust-rgb), 0.18); }
+      50%      { text-shadow: 0 0 14px rgba(var(--rust-rgb), 0.72), 0 0 28px rgba(var(--rust-rgb), 0.42); }
     }
 
     /* ── Mobile ──────────────────────────────────────────────────────────── */
