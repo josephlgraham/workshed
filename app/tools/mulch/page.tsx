@@ -3,7 +3,7 @@ import MulchCalculator from '@/components/tools/MulchCalculator'
 import Section from '@/components/tools/Section'
 
 export const metadata: Metadata = {
-  title: 'Mulch Math — Workshed',
+  title: 'Mulch Math · Workshed',
   description: 'How much mulch you actually need for your beds, paths, or tree rings. Pick a depth, enter your area, get cubic yards, cubic feet, and bag counts. Then buy 10% more.',
 }
 

@@ -2,7 +2,7 @@ import Image from 'next/image'
 import type { Tool } from '@/lib/types'
 import { getFeaturedTool, getToolsByStatus } from '@/lib/garden'
 
-export const metadata = { title: 'Tools — Workshed' }
+export const metadata = { title: 'Tools · Workshed' }
 
 /* ── Gradient palette matching index.html ─────────────────────────────── */
 const GRADIENTS: Record<string, string> = {

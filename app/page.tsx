@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 
-export const metadata = { title: "Workshed — Let's plan together." }
+export const metadata = { title: "Workshed · Let's plan together." }
 
 /* Gradients shared with /tools page */
 const GRADIENTS = {

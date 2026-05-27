@@ -3,7 +3,7 @@ import WormBinSizer from '@/components/tools/WormBinSizer'
 import Section from '@/components/tools/Section'
 
 export const metadata: Metadata = {
-  title: 'Worm Bin Sizer — Workshed',
+  title: 'Worm Bin Sizer · Workshed',
   description: 'How big a worm bin you need, how many red wigglers to buy, and how much bedding to start with. Based on your household size and how many scraps you produce each week.',
 }
 

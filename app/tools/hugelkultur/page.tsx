@@ -3,7 +3,7 @@ import HugelkulturCalculator from '@/components/tools/HugelkulturCalculator'
 import Section from '@/components/tools/Section'
 
 export const metadata: Metadata = {
-  title: 'Hugelkultur Calculator — Workshed',
+  title: 'Hugelkultur Calculator · Workshed',
   description: 'Wood, soil, and compost ratios for a raised hugelkultur bed. How much of each material you need, how deep to bury the wood, and what to expect as it decomposes.',
 }
 

@@ -59,9 +59,9 @@ const TAG_COLORS: Record<string, string> = {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
   const note = NOTES[slug]
-  if (!note) return { title: 'Not Found — Workshed' }
+  if (!note) return { title: 'Not Found · Workshed' }
   return {
-    title: `${note.title} — Workshed`,
+    title: `${note.title} · Workshed`,
     description: note.title,
   }
 }

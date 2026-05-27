@@ -1,6 +1,6 @@
 import { getSeasonalTasks } from '@/lib/garden'
 
-export const metadata = { title: 'Garden — Workshed' }
+export const metadata = { title: 'Garden · Workshed' }
 
 export default function GardenPage() {
   const season = getSeasonalTasks()

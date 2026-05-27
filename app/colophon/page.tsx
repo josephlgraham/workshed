@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Colophon — Workshed',
+  title: 'Colophon · Workshed',
   // Easter egg: don't surface this page in search results.
   robots: { index: false, follow: false },
 }

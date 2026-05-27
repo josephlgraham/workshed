@@ -5,7 +5,7 @@ import Footer from '@/components/Footer'
 import IntroTrigger from '@/components/IntroTrigger'
 
 export const metadata: Metadata = {
-  title: "Workshed — Let's plan together.",
+  title: "Workshed · Let's plan together.",
   description: 'Calculators and tools for the obsessive gardener.',
 }
 

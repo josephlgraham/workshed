@@ -3,7 +3,7 @@ import SquareFootPlanner from '@/components/tools/SquareFootPlanner'
 import Section from '@/components/tools/Section'
 
 export const metadata: Metadata = {
-  title: 'Square Foot Planner — Workshed',
+  title: 'Square Foot Planner · Workshed',
   description: 'Plan what goes where in a raised bed using square foot spacing. Pick a crop, click squares to place it, and the planner flags companion and antagonist pairings so the right plants end up next to each other.',
 }
 

@@ -3,7 +3,7 @@ import FrostCalculator from '@/components/tools/FrostCalculator'
 import Section from '@/components/tools/Section'
 
 export const metadata: Metadata = {
-  title: 'Frost Dates & Protection — Workshed',
+  title: 'Frost Dates & Protection · Workshed',
   description: 'Look up your average frost dates by ZIP. Then enter tonight’s forecast low and figure out which plants survive, which need cover, and which are already writing their wills.',
 }
 

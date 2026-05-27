@@ -1,4 +1,4 @@
-export const metadata = { title: 'Field Notes — Workshed' }
+export const metadata = { title: 'Field Notes · Workshed' }
 
 type SmallTagKey = 'growing' | 'watching' | 'pests' | 'reading'
 const SMALL_TAG_COLORS: Record<SmallTagKey, string> = {

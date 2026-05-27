@@ -3,7 +3,7 @@ import SoilVolumeCalculator from '@/components/tools/SoilVolumeCalculator'
 import Section from '@/components/tools/Section'
 
 export const metadata: Metadata = {
-  title: 'Raised Bed Soil Calculator — Workshed',
+  title: 'Raised Bed Soil Calculator · Workshed',
   description: 'How much soil you need to fill a raised bed, what to fill it with, and what to add to it once it is in there. Pick a bed size, choose a recipe, and get the volume broken down by ingredient.',
 }
 

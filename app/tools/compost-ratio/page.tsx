@@ -3,7 +3,7 @@ import CompostRatioCalculator from '@/components/tools/CompostRatioCalculator'
 import Section from '@/components/tools/Section'
 
 export const metadata: Metadata = {
-  title: 'Compost Ratio Calculator — Workshed',
+  title: 'Compost Ratio Calculator · Workshed',
   description: 'Get the browns-to-greens ratio right so your pile actually heats up. Add your materials, see your estimated C:N ratio, and get a plain recommendation.',
 }
 

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'About — Workshed',
+  title: 'About · Workshed',
   description: 'What Workshed is, why it exists, and how to follow it.',
 }
 

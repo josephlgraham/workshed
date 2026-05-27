@@ -3,7 +3,7 @@ import SeedStartingCalendar, { SpecialCasesGrid } from '@/components/tools/SeedS
 import Section from '@/components/tools/Section'
 
 export const metadata: Metadata = {
-  title: 'Seed Starting Calendar — Workshed',
+  title: 'Seed Starting Calendar · Workshed',
   description: 'Pick your last frost date. Get a schedule for every common warm- and cool-season crop. Direct sow leads where it should, indoor starts show up only where they earn their keep.',
 }
 

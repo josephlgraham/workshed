@@ -3,7 +3,7 @@ import RainwaterCalculator from '@/components/tools/RainwaterCalculator'
 import Section from '@/components/tools/Section'
 
 export const metadata: Metadata = {
-  title: 'Rainwater Harvest Calculator — Workshed',
+  title: 'Rainwater Harvest Calculator · Workshed',
   description: 'How much water can you capture from your roof? Enter your catchment area and a rainfall amount to size a rain barrel, plan overflow, and understand how far the water actually goes.',
 }
 
