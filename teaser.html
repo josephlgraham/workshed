@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Workshed — Let's plan together.</title>
+  <title>Workshed · Let's plan together.</title>
   <meta name="description" content="Calculators and tools for the obsessive gardener. Coming soon." />
   <link rel="canonical" href="https://workshed.garden/" />
 
@@ -11,11 +11,11 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Workshed" />
   <meta property="og:url" content="https://workshed.garden/" />
-  <meta property="og:title" content="Workshed — Let&rsquo;s plan together." />
+  <meta property="og:title" content="Workshed · Let&rsquo;s plan together." />
   <meta property="og:description" content="Calculators and tools for the obsessive gardener. Coming soon." />
   <meta property="og:image" content="https://workshed.garden/og.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Workshed — Let&rsquo;s plan together." />
+  <meta name="twitter:title" content="Workshed · Let&rsquo;s plan together." />
   <meta name="twitter:description" content="Calculators and tools for the obsessive gardener. Coming soon." />
   <meta name="twitter:image" content="https://workshed.garden/og.png" />
 
@@ -28,6 +28,15 @@
 
   <link rel="alternate" type="application/rss+xml" title="Workshed" href="/feed.xml" />
 
+  <!-- Google Analytics (GA4). Replace G-XXXXXXXXXX with the Measurement ID from your GA4 property. -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -37,7 +46,7 @@
   <script>(function(){var s=localStorage.getItem('workshed-theme');if(s)document.documentElement.setAttribute('data-theme',s);})();</script>
   <!-- Gate intro animation before first paint (reduced-motion / no-JS jump to the final state) -->
   <script>(function(){try{var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;document.documentElement.setAttribute('data-intro',rm?'done':'pending');}catch(e){document.documentElement.setAttribute('data-intro','done');}})();</script>
-  <noscript><style>.ws-topbar,.ws-word,.ws-masthead-dash,.ws-tagline,.ws-teaser-body{opacity:1!important;}</style></noscript>
+  <noscript><style>.ws-topbar,.ws-prefix,.ws-suffix,.ws-masthead-dash,.ws-tagline,.ws-teaser-body{opacity:1!important;}</style></noscript>
 
   <style>
     /* ── Design tokens ─────────────────────────────────────────────────── */
@@ -50,6 +59,7 @@
       --ink-muted: #807a6c;
       --rule: #d8d2c2;
       --rust: #b5470e;
+      --rust-rgb: 181, 71, 14;
       --green: #2c5530;
       --sunflower: #d99410;
       --shadow: rgba(20, 18, 12, 0.12);
@@ -68,6 +78,7 @@
       --ink-muted: #8a8270;
       --rule: #3a3528;
       --rust: #d4622a;
+      --rust-rgb: 212, 98, 42;
       --green: #6ba273;
       --sunflower: #f4c542;
       --shadow: rgba(0, 0, 0, 0.4);
@@ -83,6 +94,7 @@
         --ink-muted: #8a8270;
         --rule: #3a3528;
         --rust: #d4622a;
+        --rust-rgb: 212, 98, 42;
         --green: #6ba273;
         --sunflower: #f4c542;
         --shadow: rgba(0, 0, 0, 0.4);
@@ -153,10 +165,17 @@
       from { opacity: 0; transform: translateY(18px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+    /* Lockup: WORKSHED flares rust with a glow, then returns to the default ink */
+    @keyframes ws-lock {
+      0%   { color: var(--ink);  text-shadow: 0 0 0 rgba(var(--rust-rgb), 0); }
+      28%  { color: var(--rust); text-shadow: 0 0 28px rgba(var(--rust-rgb), 0.78), 0 0 10px rgba(var(--rust-rgb), 0.6); }
+      100% { color: var(--ink);  text-shadow: 0 0 0 rgba(var(--rust-rgb), 0); }
+    }
 
-    /* Pending (pre-JS) and cycling: hide everything that reveals after the wordmark settles */
+    /* Pending (pre-JS) and cycling: hide everything that reveals after the wordmark locks */
     :root[data-intro="pending"] .ws-topbar,
-    :root[data-intro="pending"] .ws-word,
+    :root[data-intro="pending"] .ws-prefix,
+    :root[data-intro="pending"] .ws-suffix,
     :root[data-intro="pending"] .ws-masthead-dash,
     :root[data-intro="pending"] .ws-tagline,
     :root[data-intro="pending"] .ws-teaser-body,
@@ -164,25 +183,32 @@
     :root[data-intro="cycling"] .ws-tagline,
     :root[data-intro="cycling"] .ws-teaser-body { opacity: 0; }
 
-    /* Cycling: topbar eases in while the wordmark flips through words */
+    /* Cycling: topbar eases in, and SHED fades in once (the prefix flips on top of it) */
     :root[data-intro="cycling"] .ws-topbar {
       animation: ws-topbar-in 260ms ease-out both;
     }
+    :root[data-intro="cycling"] .ws-suffix {
+      animation: ws-fade-up 240ms ease-out both;
+    }
 
-    /* Wordmark word flip — JS toggles .in / .out as it cycles GARDEN → TOOL → WORK → WORKSHED */
-    .ws-word.in  { transform-origin: center top;    animation: ws-flap-in 240ms var(--ease-bounce) both; }
-    .ws-word.out { transform-origin: center bottom; animation: ws-flap-out 180ms ease-in both; }
+    /* Prefix flip — JS toggles .in / .out as it cycles WORK → GEAR → GARDEN → TOOL → PLAN → WORK */
+    .ws-prefix.in  { transform-origin: center top;    animation: ws-flap-in 220ms var(--ease-bounce) both; }
+    .ws-prefix.out { transform-origin: center bottom; animation: ws-flap-out 160ms ease-in both; }
 
-    /* Settled: dash draws, then tagline, then the Coming Soon body, fade up in sequence */
+    /* Lockup glow — both halves of WORKSHED flare rust when it locks back onto WORK */
+    .ws-wordmark.locked .ws-prefix,
+    .ws-wordmark.locked .ws-suffix { animation: ws-lock 880ms ease-out both; }
+
+    /* Settled: the rust bar grows under the word, then tagline, then the Coming Soon body */
     :root[data-intro="settled"] .ws-masthead-dash {
       transform-origin: center;
-      animation: ws-dash-draw 380ms var(--ease-bounce) 60ms both;
+      animation: ws-dash-draw 460ms var(--ease-bounce) both;
     }
     :root[data-intro="settled"] .ws-tagline {
-      animation: ws-fade-up 280ms ease-out 200ms both;
+      animation: ws-fade-up 280ms ease-out 320ms both;
     }
     :root[data-intro="settled"] .ws-teaser-body {
-      animation: ws-content-in 400ms ease-out 360ms both;
+      animation: ws-content-in 400ms ease-out 480ms both;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -247,19 +273,33 @@
       font-weight: 800;
       font-size: clamp(3.25rem, 9.5vw, 6.5rem);
       line-height: 0.85;
+      letter-spacing: -0.035em;
       color: var(--ink);
+      position: relative;
       display: inline-block;
       text-decoration: none;
       cursor: default;
-      perspective: 700px;
     }
 
-    .ws-word {
-      display: inline-block;
-      letter-spacing: -0.035em;
-      backface-visibility: hidden;
-      will-change: transform, opacity;
+    /* Invisible full word reserves centered space so SHED never moves */
+    .ws-word-sizer { visibility: hidden; }
+
+    /* Prefix + SHED are right-anchored over that space: SHED stays put, longer prefixes grow leftward */
+    .ws-word-row {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-end;
+      white-space: nowrap;
+      perspective: 800px;
     }
+
+    .ws-prefix, .ws-suffix {
+      display: inline-block;
+      backface-visibility: hidden;
+    }
+    .ws-prefix { will-change: transform, opacity; }
 
     .ws-dash-wrap {
       display: flex;
@@ -456,8 +496,9 @@
     </div>
 
     <div class="ws-wordmark-wrap">
-      <div class="ws-wordmark" aria-label="Workshed">
-        <span class="ws-word" id="wsWord" aria-hidden="true">WORKSHED</span>
+      <div class="ws-wordmark" role="img" aria-label="Workshed">
+        <span class="ws-word-sizer" aria-hidden="true">WORKSHED</span>
+        <span class="ws-word-row" aria-hidden="true"><span class="ws-prefix" id="wsPrefix">WORK</span><span class="ws-suffix">SHED</span></span>
       </div>
 
       <div class="ws-dash-wrap">
@@ -477,7 +518,7 @@
       <h1 class="ws-teaser-headline">Calculators &amp; tools for the obsessive gardener.</h1>
 
       <p class="ws-teaser-desc">
-        Soil volumes, compost ratios, frost dates, seed-starting calendars. The nerdy stuff
+        Soil volumes, compost ratios, frost dates, seed-starting calendars: the nerdy stuff
         that makes planning a garden feel like solving a good puzzle.
       </p>
 
@@ -525,37 +566,51 @@
     document.getElementById('topbarDate').textContent =
       new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
-    // ── Intro: wordmark cycles GARDEN → TOOL → WORK → WORKSHED, then dash/tagline/body settle in ──
+    // ── Intro: WORK cycles GEAR → GARDEN → TOOL → PLAN around a fixed SHED, then locks back on WORK ──
     // Reusable so the theme toggle can replay it. Reduced-motion jumps straight to the final state.
     var introToken = 0;
     function runIntro() {
-      var el = document.getElementById('wsWord');
-      if (!el) return;
+      var prefix = document.getElementById('wsPrefix');
+      var wm = document.querySelector('.ws-wordmark');
+      var dash = document.querySelector('.ws-masthead-dash');
+      if (!prefix || !wm) return;
+
+      // Underline most of the word: size the bar to ~82% of the locked wordmark
+      if (dash) dash.style.width = Math.round(wm.getBoundingClientRect().width * 0.82) + 'px';
+
+      wm.classList.remove('locked');
+
       if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        el.className = 'ws-word';
-        el.textContent = 'WORKSHED';
+        prefix.className = 'ws-prefix';
+        prefix.textContent = 'WORK';
         root.setAttribute('data-intro', 'done');
         return;
       }
-      var WORDS = ['GARDEN', 'TOOL', 'WORK', 'WORKSHED'];
-      var HOLD  = [360, 240, 160];               // visible ms per non-final word (accelerating)
-      var FLIP_IN = 240, FLIP_OUT = 180, SETTLE_PAUSE = 220;
+
+      var SEQ = ['WORK', 'GEAR', 'GARDEN', 'TOOL', 'PLAN', 'WORK'];   // final WORK locks
+      var FLIP_IN = 220, FLIP_OUT = 160, HOLD = 180, LOCK_BEAT = 200, GLOW = 880;
       var token = ++introToken;                  // cancels any in-flight run (e.g. rapid theme toggles)
 
       root.setAttribute('data-intro', 'cycling');
       (function step(i) {
         if (token !== introToken) return;
-        el.textContent = WORDS[i];
-        el.className = 'ws-word in';
-        if (i === WORDS.length - 1) {
-          setTimeout(function() { if (token === introToken) root.setAttribute('data-intro', 'settled'); }, FLIP_IN + SETTLE_PAUSE);
+        prefix.textContent = SEQ[i];
+        prefix.className = 'ws-prefix in';
+        if (i === SEQ.length - 1) {
+          setTimeout(function() {
+            if (token !== introToken) return;
+            prefix.className = 'ws-prefix';              // settle the flip
+            wm.classList.add('locked');                  // rust glow flare
+            root.setAttribute('data-intro', 'settled');  // bar grows under, tagline + body settle
+            setTimeout(function() { if (token === introToken) wm.classList.remove('locked'); }, GLOW);
+          }, FLIP_IN + LOCK_BEAT);
           return;
         }
         setTimeout(function() {
           if (token !== introToken) return;
-          el.className = 'ws-word out';
+          prefix.className = 'ws-prefix out';
           setTimeout(function() { step(i + 1); }, FLIP_OUT);
-        }, FLIP_IN + HOLD[i]);
+        }, FLIP_IN + HOLD);
       })(0);
     }
 
