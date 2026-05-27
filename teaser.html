@@ -465,6 +465,8 @@
     @media (max-width: 600px) {
       .ws-topbar { padding: 0.65rem 1.25rem; }
       .ws-wordmark-wrap { padding: 1.25rem 1.25rem 0; }
+      /* Shrink with viewport so the widest flip word (GARDENSHED) fits instead of clipping off-screen */
+      .ws-wordmark { font-size: clamp(2rem, 11.5vw, 3.25rem); }
       .ws-tagline { font-size: 1.9rem; }
       main { padding: 3rem 1.25rem 2.5rem; }
     }
@@ -635,6 +637,45 @@
 
     // First load: play the intro once (reduced-motion / no-JS already settled via <head>)
     if (root.getAttribute('data-intro') === 'pending') runIntro();
+
+    // ── RSS: copy the feed URL instead of dumping the raw XML into the browser ──
+    var rssBtn = document.getElementById('rssBtn');
+    var rssNote = document.getElementById('rssNote');
+    if (rssBtn && rssNote) {
+      var rssNoteDefault = rssNote.textContent;
+      var rssNoteTimer;
+      function confirmCopy(ok) {
+        rssNote.textContent = ok
+          ? 'Feed URL copied — paste it into your RSS reader.'
+          : 'Copy failed — the feed lives at ' + rssBtn.href;
+        clearTimeout(rssNoteTimer);
+        rssNoteTimer = setTimeout(function() { rssNote.textContent = rssNoteDefault; }, 4000);
+      }
+      function legacyCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        return ok;
+      }
+      rssBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var url = rssBtn.href;   // browser resolves this to the absolute feed URL
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(
+            function() { confirmCopy(true); },
+            function() { confirmCopy(legacyCopy(url)); }
+          );
+        } else {
+          confirmCopy(legacyCopy(url));
+        }
+      });
+    }
   </script>
 
 </body>
