@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Workshed — Colophon</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f1ea;
+    --paper-tint: #ebe7dc;
+    --card: #faf7f0;
+    --ink: #15140f;
+    --ink-soft: #2e2c25;
+    --ink-muted: #807a6c;
+    --rule: #d8d2c2;
+    --green: #2c5530;
+    --sunflower: #d99410;
+    --tomato: #c14a3a;
+  }
+
+  [data-theme="dark"] {
+    --paper: #1a1814;
+    --paper-tint: #221f1a;
+    --card: #252119;
+    --ink: #f0ebde;
+    --ink-soft: #d4cdb8;
+    --ink-muted: #8a8270;
+    --rule: #3a3528;
+    --green: #6ba273;
+    --sunflower: #f4c542;
+    --tomato: #e87060;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+      --paper: #1a1814;
+      --paper-tint: #221f1a;
+      --card: #252119;
+      --ink: #f0ebde;
+      --ink-soft: #d4cdb8;
+      --ink-muted: #8a8270;
+      --rule: #3a3528;
+      --green: #6ba273;
+      --sunflower: #f4c542;
+      --tomato: #e87060;
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 12% 18%, rgba(120, 100, 60, 0.04) 0px, transparent 2px),
+      radial-gradient(circle at 73% 41%, rgba(80, 70, 40, 0.035) 0px, transparent 2px);
+    background-size: 220px 220px, 280px 280px;
+    pointer-events: none;
+  }
+
+  .page {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 6rem 2.5rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .back {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 4rem;
+  }
+  .back:hover { color: var(--green); }
+
+  .mark {
+    font-size: 4rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 2.5rem;
+    line-height: 1;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 2.25rem;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+    font-variation-settings: "opsz" 144;
+  }
+
+  .translation {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .body-text {
+    font-family: 'Fraunces', serif;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+
+  .body-text p { margin-bottom: 1.25rem; }
+
+  .body-text p:last-child { margin-bottom: 0; }
+
+  .body-text .green-word { color: var(--green); font-style: italic; }
+  .body-text .yellow-word { color: var(--sunflower); font-style: italic; }
+  .body-text .red-word { color: var(--tomato); font-style: italic; }
+
+  .signoff {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <a href="index.html" class="back">← Back to Workshed</a>
+
+    <div class="mark">🌻⌛💀</div>
+
+    <h1>Het is een mooie dag<br>om te leven.</h1>
+    <div class="translation">"It is a beautiful day to live."</div>
+
+    <div class="body-text">
+      <p>An old Dutch saying. The full thought is something like: <em>it is a beautiful day to live, and someday it will not be.</em></p>
+
+      <p>The three marks at the top of every page are a quiet version of that. The <span class="yellow-word">sun</span>. The <span class="green-word">hourglass</span>. The <span class="red-word">end</span>.</p>
+
+      <p>It's a reminder I keep for myself. The garden is the same: a thing that's alive, a thing that takes time, a thing that doesn't last. That's the whole point of tending it.</p>
+
+      <p>If you've found your way here, you noticed. Welcome.</p>
+    </div>
+
+    <div class="signoff">— Workshed</div>
+  </div>
+
+<script>
+  const saved = localStorage.getItem('workshed-theme');
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+</script>
+</body>
+</html>

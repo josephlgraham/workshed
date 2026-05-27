@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Workshed</title>
+    <link>https://workshed.garden</link>
+    <description>Calculators and field notes for the obsessive gardener.</description>
+    <language>en-us</language>
+    <copyright>Workshed</copyright>
+    <atom:link href="https://workshed.garden/feed.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 26 May 2026 12:00:00 GMT</lastBuildDate>
+    <item>
+      <title>Workshed is coming</title>
+      <link>https://workshed.garden</link>
+      <guid isPermaLink="false">workshed-launch-announce</guid>
+      <pubDate>Tue, 26 May 2026 12:00:00 GMT</pubDate>
+      <description>Calculators and field notes for the obsessive gardener. Subscribe now and the launch post lands in your reader.</description>
+      <category>Announcements</category>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,285 @@
+@import "tailwindcss";
+
+/* ── Workshed design tokens ─────────────────────────────────────────────── */
+:root {
+  --paper: #f4f1ea;
+  --paper-tint: #ebe7dc;
+  --card: #faf7f0;
+  --ink: #15140f;
+  --ink-soft: #2e2c25;
+  --ink-muted: #807a6c;
+  --rule: #d8d2c2;
+  --rust: #b5470e;
+  --green: #2c5530;
+  --sunflower: #d99410;
+  --eggplant: #5e2475;
+  --shadow: rgba(20, 18, 12, 0.12);
+  --shadow-deep: rgba(20, 18, 12, 0.18);
+
+  /* Legacy tokens — kept while Garden/Greenhouse/home pages await redesign */
+  --color-purple-light: #b07ef8;
+  --color-purple: #9333ea;
+  --color-purple-mid: #7c3aed;
+  --color-purple-dark: #6d28d9;
+  --color-gold: #b45309;
+  --color-gold-light: #d97706;
+  --color-emerald: hsl(148, 42%, 28%);
+  --color-emerald-light: hsl(148, 38%, 38%);
+  --color-bg: hsl(148, 48%, 6%);
+  --color-bg-secondary: hsl(148, 38%, 11%);
+  --color-bg-card: hsl(40, 42%, 91%);
+  --color-bg-card-hover: hsl(40, 42%, 86%);
+  --color-cream: hsl(42, 55%, 88%);
+  --color-cream-muted: hsl(42, 30%, 68%);
+  --color-text: hsl(148, 42%, 11%);
+  --color-text-muted: hsl(148, 22%, 33%);
+  --color-text-dim: hsl(148, 12%, 50%);
+  --color-border: hsl(38, 28%, 68%);
+  --color-border-thick: hsl(38, 32%, 55%);
+  --color-magenta: #7c3aed;
+  --color-magenta-bright: #9333ea;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Archivo', 'Inter', system-ui, sans-serif;
+  --font-flourish: 'Whisper', 'Segoe Script', cursive;
+  /* Legacy alias — Fraunces retired from visible use. Anything still pointing
+     at --font-serif now renders in Inter so nothing breaks mid-migration. */
+  --font-serif: var(--font-sans);
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-hand: 'Sacramento', cursive;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.75rem;
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-theme="dark"] {
+  --paper: #1a1814;
+  --paper-tint: #221f1a;
+  --card: #252119;
+  --ink: #f0ebde;
+  --ink-soft: #d4cdb8;
+  --ink-muted: #8a8270;
+  --rule: #3a3528;
+  --rust: #d4622a;
+  --green: #6ba273;
+  --sunflower: #f4c542;
+  --eggplant: #c46fe0;
+  --shadow: rgba(0, 0, 0, 0.4);
+  --shadow-deep: rgba(0, 0, 0, 0.55);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --paper: #1a1814;
+    --paper-tint: #221f1a;
+    --card: #252119;
+    --ink: #f0ebde;
+    --ink-soft: #d4cdb8;
+    --ink-muted: #8a8270;
+    --rule: #3a3528;
+    --rust: #d4622a;
+    --green: #6ba273;
+    --sunflower: #f4c542;
+    --eggplant: #c46fe0;
+    --shadow: rgba(0, 0, 0, 0.4);
+    --shadow-deep: rgba(0, 0, 0, 0.55);
+  }
+}
+
+/* ── Global resets & base ────────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+/* Headings render in the display face (Archivo). `!important` wins over the
+   per-component inline font-family so the sans migration didn't require
+   touching every inline style. Body text stays Inter via --font-serif's
+   alias to --font-sans. */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display) !important;
+}
+
+/* Opt-in flourish (Whisper) for the rare decorative line — e.g. the colophon.
+   Higher specificity + !important beats the heading rule above. */
+.ws-flourish {
+  font-family: var(--font-flourish) !important;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Subtle paper texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(120, 100, 60, 0.04) 0px, transparent 2px),
+    radial-gradient(circle at 73% 41%, rgba(80, 70, 40, 0.035) 0px, transparent 2px),
+    radial-gradient(circle at 38% 76%, rgba(120, 100, 60, 0.03) 0px, transparent 2px);
+  background-size: 220px 220px, 280px 280px, 190px 190px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+::selection { background: var(--green); color: var(--paper); }
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--paper-tint); }
+::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-muted); }
+
+/* ── Keyframes ───────────────────────────────────────────────────────────── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.35; }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1) rotate(-2deg); }
+  50%       { transform: scale(1.05) rotate(2deg); }
+}
+
+/* ── Reduced-motion ──────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Masthead rebuild animation ──────────────────────────────────────────── */
+/* Gated by <html data-intro="play|done"> set before first paint.
+   Replayed every time the user toggles the theme via ThemeToggle.
+   Respects prefers-reduced-motion (gate handled in the inline script). */
+
+/* ── Keyframes ── */
+
+/* Each letter of WORKSHED drops in from above with a spring bounce */
+@keyframes ws-letter-in {
+  from { opacity: 0; transform: translateY(-28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Topbar slides in from the top */
+@keyframes ws-topbar-in {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Rust dash extends outward from center */
+@keyframes ws-dash-draw {
+  from { transform: scaleX(0); opacity: 0; }
+  to   { transform: scaleX(1); opacity: 1; }
+}
+
+/* Tagline and nav links rise up from below */
+@keyframes ws-fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* PENDING state: elements are hidden before the client component fires.
+   Prevents a flash of fully-visible masthead before the animation starts. */
+:root[data-intro="pending"] .ws-topbar,
+:root[data-intro="pending"] .ws-letter-1,
+:root[data-intro="pending"] .ws-letter-2,
+:root[data-intro="pending"] .ws-letter-3,
+:root[data-intro="pending"] .ws-letter-4,
+:root[data-intro="pending"] .ws-letter-5,
+:root[data-intro="pending"] .ws-letter-6,
+:root[data-intro="pending"] .ws-letter-7,
+:root[data-intro="pending"] .ws-letter-8,
+:root[data-intro="pending"] .ws-masthead-dash,
+:root[data-intro="pending"] .ws-tagline,
+:root[data-intro="pending"] .ws-nav-link { opacity: 0; }
+
+/* ── Timing (all relative to page load / theme-toggle trigger)
+     0ms   — topbar
+     160ms — W
+     220ms — O
+     280ms — R
+     340ms — K
+     400ms — S
+     460ms — H
+     520ms — E
+     580ms — D
+     660ms — dash
+     800ms — tagline
+     900ms — nav links (staggered 80ms each)             ── */
+
+:root[data-intro="play"] .ws-topbar {
+  animation: ws-topbar-in 260ms ease-out 0ms both;
+}
+
+:root[data-intro="play"] .ws-letter-1 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 160ms both; }
+:root[data-intro="play"] .ws-letter-2 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 220ms both; }
+:root[data-intro="play"] .ws-letter-3 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 280ms both; }
+:root[data-intro="play"] .ws-letter-4 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 340ms both; }
+:root[data-intro="play"] .ws-letter-5 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 400ms both; }
+:root[data-intro="play"] .ws-letter-6 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 460ms both; }
+:root[data-intro="play"] .ws-letter-7 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 520ms both; }
+:root[data-intro="play"] .ws-letter-8 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 580ms both; }
+
+:root[data-intro="play"] .ws-masthead-dash {
+  transform-origin: center;
+  animation: ws-dash-draw 380ms cubic-bezier(0.34, 1.56, 0.64, 1) 660ms both;
+}
+
+:root[data-intro="play"] .ws-tagline {
+  animation: ws-fade-up 280ms ease-out 800ms both;
+}
+
+:root[data-intro="play"] .ws-nav-link:nth-child(1) { animation: ws-fade-up 220ms ease-out  900ms both; }
+:root[data-intro="play"] .ws-nav-link:nth-child(2) { animation: ws-fade-up 220ms ease-out  980ms both; }
+:root[data-intro="play"] .ws-nav-link:nth-child(3) { animation: ws-fade-up 220ms ease-out 1060ms both; }
+:root[data-intro="play"] .ws-nav-link:nth-child(4) { animation: ws-fade-up 220ms ease-out 1140ms both; }
+
+/* ── Collapsible editorial sections ─────────────────────────────────────── */
+.ws-section > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--rule);
+  user-select: none;
+  margin-bottom: 0;
+}
+.ws-section > summary::-webkit-details-marker { display: none; }
+.ws-section > summary::after {
+  content: '+';
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  flex-shrink: 0;
+  line-height: 1;
+}
+.ws-section[open] > summary {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0.875rem;
+}
+.ws-section[open] > summary::after {
+  content: '−';
+}
