@@ -56,6 +56,12 @@ const TAG_COLORS: Record<string, string> = {
   reading:  'var(--ink-muted)',
 }
 
+export function generateStaticParams() {
+  return Object.keys(NOTES).map((slug) => ({ slug }))
+}
+
+export const dynamicParams = false
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
   const note = NOTES[slug]

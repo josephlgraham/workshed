@@ -1,20 +1,12 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  async rewrites() {
-    return [
-      { source: '/feed.xml', destination: '/rss' },
-    ]
-  },
-  async redirects() {
-    return [
-      { source: '/shed', destination: '/tools', permanent: true },
-      { source: '/shed/:slug*', destination: '/tools/:slug*', permanent: true },
-    ]
-  },
+  output: 'export',
   images: {
+    unoptimized: true,
     localPatterns: [{ pathname: '/photos/**' }],
   },
+  trailingSlash: true,
 }
 
 export default nextConfig
