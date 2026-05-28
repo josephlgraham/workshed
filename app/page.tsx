@@ -128,7 +128,12 @@ export default function HomePage() {
           fontVariationSettings: '"opsz" 144',
         }}>
           Tools for your garden that{' '}
-          <em style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--green)' }}>work</em>.
+          <em style={{
+            fontStyle: 'italic',
+            fontWeight: 400,
+            color: 'var(--green)',
+            textShadow: '0 0 12px rgba(var(--green-rgb), 0.55), 0 0 28px rgba(var(--green-rgb), 0.3)',
+          }}>work</em>.
         </h1>
         <div style={{
           fontFamily: 'var(--font-serif)',

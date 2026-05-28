@@ -107,7 +107,7 @@ export default function ColophonPage() {
           color: 'var(--ink-muted)',
           textAlign: 'center',
         }}>
-          A sticker by Sammy Winston, AKA Gloomer. I took this photo a long time ago, and it has stayed with me since.
+          A sticker by Sammy Winston, AKA Gloomer.
         </figcaption>
       </figure>
 
@@ -130,6 +130,6 @@ const accentBase: React.CSSProperties = {
   fontStyle: 'italic',
   fontWeight: 500,
 }
-const accentSun: React.CSSProperties       = { ...accentBase, color: 'var(--rust)' }
+const accentSun: React.CSSProperties       = { ...accentBase, color: 'var(--sunflower)' }
 const accentHourglass: React.CSSProperties = { ...accentBase, color: 'var(--green)' }
 const accentEnd: React.CSSProperties       = { ...accentBase, color: 'var(--rust)' }
