@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import ShareButton from '@/components/ShareButton'
 
 // Add new notes here as they publish. Matches the slugs in /field/page.tsx and feed.xml.
 const NOTES: Record<string, {
@@ -84,13 +85,13 @@ export default async function FieldNotePage({ params }: { params: Promise<{ slug
   return (
     <div style={{ maxWidth: 680, margin: '0 auto', padding: '3rem 2rem 5rem' }}>
 
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
       <nav style={{
         fontFamily: 'var(--font-mono, monospace)',
         fontSize: '0.65rem',
         letterSpacing: '0.15em',
         textTransform: 'uppercase',
         color: 'var(--ink-muted)',
-        marginBottom: '2rem',
         display: 'flex',
         gap: '0.5rem',
         alignItems: 'center',
@@ -99,6 +100,8 @@ export default async function FieldNotePage({ params }: { params: Promise<{ slug
         <span>·</span>
         <span style={{ color: TAG_COLORS[note.tag] ?? 'var(--ink-muted)' }}>{note.tagLabel}</span>
       </nav>
+      <ShareButton title={`${note.title} · Workshed`} />
+      </div>
 
       <h1 style={{
         fontFamily: 'var(--font-display)',

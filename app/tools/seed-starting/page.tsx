@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import SeedStartingCalendar, { SpecialCasesGrid } from '@/components/tools/SeedStartingCalendar'
 import Section from '@/components/tools/Section'
+import ShareButton from '@/components/ShareButton'
 
 export const metadata: Metadata = {
   title: 'Seed Starting Calendar · Workshed',
@@ -11,14 +12,14 @@ export default function SeedStartingPage() {
   return (
     <div style={{ maxWidth: 980, margin: '0 auto', padding: '3rem 2rem 5rem' }}>
 
-      {/* Breadcrumb */}
+      {/* Breadcrumb + share */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
       <nav style={{
         fontFamily: 'var(--font-mono, monospace)',
         fontSize: '0.65rem',
         letterSpacing: '0.15em',
         textTransform: 'uppercase',
         color: 'var(--ink-muted)',
-        marginBottom: '1.5rem',
         display: 'flex',
         gap: '0.5rem',
         alignItems: 'center',
@@ -27,6 +28,8 @@ export default function SeedStartingPage() {
         <span>·</span>
         <span>Timing</span>
       </nav>
+      <ShareButton />
+      </div>
 
       {/* Header */}
       <h1 style={{
