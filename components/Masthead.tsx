@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getActiveTheme } from '@/lib/seasons'
 import ThemeToggle from '@/components/ThemeToggle'
+import LiveSeasonLabel from '@/components/LiveSeasonLabel'
 
 const NAV_LINKS = [
   { href: '/',       label: 'Home'        },
@@ -39,7 +40,7 @@ export default function Masthead() {
           <ThemeToggle />
         </div>
         <div style={{ fontFeatureSettings: '"tnum" 1' }}>
-          {dateStr} · {theme.label}
+          <LiveSeasonLabel fallbackDate={dateStr} fallbackLabel={theme.label} />
         </div>
         <div />{/* right slot intentionally empty — weather lives on /garden, not in chrome */}
       </div>

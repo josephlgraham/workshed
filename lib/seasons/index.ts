@@ -45,9 +45,47 @@ function inRange(now: string, start: string, end: string): boolean {
   return now >= start || now <= end
 }
 
-export function getActiveTheme(now = new Date()): SeasonTheme {
-  const today = mmdd(now)
+export type Hemisphere = 'north' | 'south'
+
+function shiftMonths(d: Date, months: number): Date {
+  const r = new Date(d)
+  r.setMonth(r.getMonth() + months)
+  return r
+}
+
+export function getActiveTheme(now = new Date(), hemisphere: Hemisphere = 'north'): SeasonTheme {
+  const effective = hemisphere === 'south' ? shiftMonths(now, 6) : now
+  const today = mmdd(effective)
   return themes.find(t => inRange(today, t.dateRange.start, t.dateRange.end)) ?? defaultTheme
+}
+
+// Timezone prefixes covering the populated Southern Hemisphere. Equatorial and
+// ambiguous zones intentionally fall through to 'north' — the seasonal swing
+// near the equator is small enough that getting it wrong is harmless.
+const SOUTHERN_TZ_PREFIXES = [
+  'Australia/',
+  'Pacific/Auckland', 'Pacific/Chatham', 'Pacific/Norfolk',
+  'Pacific/Fiji', 'Pacific/Tongatapu', 'Pacific/Apia', 'Pacific/Noumea',
+  'Africa/Johannesburg', 'Africa/Maputo', 'Africa/Windhoek',
+  'Africa/Maseru', 'Africa/Mbabane', 'Africa/Gaborone',
+  'Africa/Harare', 'Africa/Lusaka', 'Africa/Antananarivo',
+  'America/Argentina/', 'America/Buenos_Aires',
+  'America/Sao_Paulo', 'America/Santiago', 'America/Punta_Arenas',
+  'America/Montevideo', 'America/Asuncion', 'America/La_Paz',
+  'America/Campo_Grande', 'America/Cuiaba', 'America/Bahia',
+  'America/Recife', 'America/Fortaleza', 'America/Maceio',
+  'Indian/Mauritius', 'Indian/Reunion',
+  'Antarctica/',
+]
+
+export function detectHemisphere(): Hemisphere {
+  if (typeof window === 'undefined') return 'north'
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''
+    return SOUTHERN_TZ_PREFIXES.some(p => tz.startsWith(p)) ? 'south' : 'north'
+  } catch {
+    return 'north'
+  }
 }
 
 export { defaultTheme }
