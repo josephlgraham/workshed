@@ -1,12 +1,45 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import './globals.css'
 import Masthead from '@/components/Masthead'
 import Footer from '@/components/Footer'
 import IntroTrigger from '@/components/IntroTrigger'
 
+const SITE_URL = 'https://workshed.garden'
+const GA_ID = 'G-6RZSYJ5RL0'
+
 export const metadata: Metadata = {
-  title: "Workshed · Let's plan together.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Workshed · Let's plan together.",
+    template: '%s · Workshed',
+  },
   description: 'Calculators and tools for the obsessive gardener.',
+  alternates: {
+    canonical: '/',
+    types: { 'application/rss+xml': '/feed.xml' },
+  },
+  openGraph: {
+    type: 'website',
+    siteName: 'Workshed',
+    url: SITE_URL,
+    title: "Workshed · Let's plan together.",
+    description: 'Calculators and tools for the obsessive gardener.',
+    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Workshed' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Workshed · Let's plan together.",
+    description: 'Calculators and tools for the obsessive gardener.',
+    images: ['/og.png'],
+  },
+  icons: {
+    icon: [
+      {
+        url: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%23b5470e'/%3E%3Ctext x='16' y='23' font-family='Archivo,Arial,sans-serif' font-size='20' font-weight='800' fill='%23f4f1ea' text-anchor='middle'%3EW%3C/text%3E%3C/svg%3E",
+      },
+    ],
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -31,6 +64,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
         <Footer />
+        {/* Google Analytics 4 */}
+        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_ID}');`}
+        </Script>
       </body>
     </html>
   )
