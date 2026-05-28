@@ -534,7 +534,7 @@ function ActionRow({ action }: { action: TimelineAction }) {
   const { date, crop, action: actionLabel, badge, actionType } = action
   const actionColor =
     actionType === 'direct'    ? 'var(--green)' :
-    actionType === 'indoor'    ? 'var(--eggplant)' :
+    actionType === 'indoor'    ? 'var(--rust)' :
                                  'var(--sunflower)'
   return (
     <div style={{
@@ -589,7 +589,7 @@ function Badge({ kind }: { kind: 'preferred' | 'needed' | 'optional' }) {
   const label = kind === 'preferred' ? 'recommended' : kind === 'needed' ? 'required' : 'optional'
   const color =
     kind === 'preferred' ? { fg: 'var(--green)',     bg: 'rgba(44,85,48,0.1)',    bd: 'rgba(44,85,48,0.25)' } :
-    kind === 'needed'    ? { fg: 'var(--eggplant)',    bg: 'rgba(119,76,134,0.1)',   bd: 'rgba(119,76,134,0.25)' } :
+    kind === 'needed'    ? { fg: 'var(--rust)',        bg: 'rgba(181,71,14,0.1)',    bd: 'rgba(181,71,14,0.25)' } :
                            { fg: 'var(--ink-muted)', bg: 'transparent',           bd: 'var(--rule)' }
   return (
     <span style={{
@@ -775,7 +775,7 @@ function CropRow({ crop, frost, showOptionalIndoor, expanded, onToggleExpand, ch
           className="ws-cell-indoor"
           mobLabel="Start indoors"
           date={indoorDate}
-          color="var(--eggplant)"
+          color="var(--rust)"
           badge={indoorDate ? (indoorRequired ? 'needed' : 'optional') : null}
           fallback={crop.directSow.strategy === 'not_recommended' && !showIndoor && indoorOptional ? 'toggle optional' : '—'}
         />

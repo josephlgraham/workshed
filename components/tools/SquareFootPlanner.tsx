@@ -522,8 +522,8 @@ export default function SquareFootPlanner() {
                     }
                   }
                 }
-                const borderColor = hasBad ? 'var(--eggplant)' : hasGood ? 'var(--green)' : (crop ? 'var(--ink-soft)' : 'var(--rule)')
-                const bgColor = hasBad ? 'rgba(119,76,134,0.08)' : hasGood ? 'rgba(44,85,48,0.08)' : (crop ? 'var(--paper-tint)' : 'var(--paper)')
+                const borderColor = hasBad ? 'var(--rust)' : hasGood ? 'var(--green)' : (crop ? 'var(--ink-soft)' : 'var(--rule)')
+                const bgColor = hasBad ? 'rgba(181,71,14,0.08)' : hasGood ? 'rgba(44,85,48,0.08)' : (crop ? 'var(--paper-tint)' : 'var(--paper)')
                 return (
                   <button
                     key={i}
@@ -746,7 +746,7 @@ export default function SquareFootPlanner() {
                     fontWeight: 600,
                     letterSpacing: '0.12em',
                     textTransform: 'uppercase',
-                    color: 'var(--eggplant)',
+                    color: 'var(--rust)',
                     marginBottom: '0.6rem',
                   }}>Keep apart</div>
                   {inspectRelationships.bad.length === 0 ? (
@@ -776,7 +776,7 @@ export default function SquareFootPlanner() {
       <style>{`
         .ws-sfg-crop-btn:hover { border-color: var(--green) !important; background: var(--paper-tint) !important; }
         .ws-sfg-info-btn:hover { border-color: var(--green) !important; color: var(--ink) !important; }
-        .ws-sfg-clear-btn:hover { border-color: var(--eggplant) !important; color: var(--eggplant) !important; }
+        .ws-sfg-clear-btn:hover { border-color: var(--rust) !important; color: var(--rust) !important; }
         .ws-sfg-companion-head:hover { border-color: var(--green) !important; }
         .ws-sfg-sq:hover { transform: scale(1.03); }
         @media (max-width: 760px) {
@@ -885,8 +885,8 @@ function Alert({ kind, a, b, children }: {
   children: React.ReactNode
 }) {
   const colors = kind === 'bad'
-    ? { fg: 'var(--eggplant)',  bg: 'rgba(119,76,134,0.08)', bd: 'rgba(119,76,134,0.35)' }
-    : { fg: 'var(--green)',   bg: 'rgba(44,85,48,0.08)',  bd: 'rgba(44,85,48,0.35)' }
+    ? { fg: 'var(--rust)',  bg: 'rgba(181,71,14,0.08)', bd: 'rgba(181,71,14,0.35)' }
+    : { fg: 'var(--green)', bg: 'rgba(44,85,48,0.08)',  bd: 'rgba(44,85,48,0.35)' }
   return (
     <div style={{
       display: 'flex',

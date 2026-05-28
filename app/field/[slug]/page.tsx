@@ -52,7 +52,7 @@ const NOTES: Record<string, {
 const TAG_COLORS: Record<string, string> = {
   growing:  'var(--green)',
   watching: 'var(--sunflower)',
-  pests:    'var(--eggplant)',
+  pests:    'var(--rust)',
   reading:  'var(--ink-muted)',
 }
 

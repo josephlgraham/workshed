@@ -4,7 +4,7 @@ type SmallTagKey = 'growing' | 'watching' | 'pests' | 'reading'
 const SMALL_TAG_COLORS: Record<SmallTagKey, string> = {
   growing: 'var(--green)',
   watching: 'var(--sunflower)',
-  pests: 'var(--eggplant)',
+  pests: 'var(--rust)',
   reading: 'var(--ink-muted)',
 }
 

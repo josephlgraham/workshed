@@ -12,7 +12,6 @@
   --rust: #b5470e;
   --green: #2c5530;
   --sunflower: #d99410;
-  --eggplant: #5e2475;
   --shadow: rgba(20, 18, 12, 0.12);
   --shadow-deep: rgba(20, 18, 12, 0.18);
 
@@ -66,7 +65,6 @@
   --rust: #d4622a;
   --green: #6ba273;
   --sunflower: #f4c542;
-  --eggplant: #c46fe0;
   --shadow: rgba(0, 0, 0, 0.4);
   --shadow-deep: rgba(0, 0, 0, 0.55);
 }
@@ -83,7 +81,6 @@
     --rust: #d4622a;
     --green: #6ba273;
     --sunflower: #f4c542;
-    --eggplant: #c46fe0;
     --shadow: rgba(0, 0, 0, 0.4);
     --shadow-deep: rgba(0, 0, 0, 0.55);
   }

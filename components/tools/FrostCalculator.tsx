@@ -403,7 +403,7 @@ export default function FrostCalculator() {
                   letterSpacing: '-0.02em',
                   fontFeatureSettings: '"tnum" 1',
                   lineHeight: 1,
-                  color: effectiveTemp <= 28 ? 'var(--eggplant)' : effectiveTemp <= 32 ? 'var(--sunflower)' : 'var(--green)',
+                  color: effectiveTemp <= 28 ? 'var(--rust)' : effectiveTemp <= 32 ? 'var(--sunflower)' : 'var(--green)',
                   marginTop: '0.25rem',
                 }}>
                   {effectiveTemp}°F
@@ -416,7 +416,7 @@ export default function FrostCalculator() {
                 <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap' }}>
                   <SummaryBox count={summary.safe}    label="safe"      color="var(--green)" />
                   <SummaryBox count={summary.risk}    label="at risk"   color="var(--sunflower)" />
-                  <SummaryBox count={summary.danger}  label="doomed"    color="var(--eggplant)" />
+                  <SummaryBox count={summary.danger}  label="doomed"    color="var(--rust)" />
                 </div>
               )}
             </div>
@@ -478,15 +478,15 @@ export default function FrostCalculator() {
         <div style={{
           marginTop: '1.25rem',
           padding: '0.9rem 1rem',
-          background: 'rgba(119,76,134,0.08)',
-          border: '1px solid rgba(119,76,134,0.35)',
-          borderLeft: '3px solid var(--eggplant)',
+          background: 'rgba(181,71,14,0.08)',
+          border: '1px solid rgba(181,71,14,0.35)',
+          borderLeft: '3px solid var(--rust)',
           fontFamily: 'var(--font-serif)',
           fontSize: '0.9rem',
           lineHeight: 1.55,
           color: 'var(--ink)',
         }}>
-          <strong style={{ color: 'var(--eggplant)' }}>The hard limit.</strong>{' '}
+          <strong style={{ color: 'var(--rust)' }}>The hard limit.</strong>{' '}
           No consumer frost cloth protects beyond about 8°F above ambient. If the forecast is 20°F, your best covering brings your plants to 28°F. That saves your broccoli. It does not save your tomato. The tomato was already dead at 32.
         </div>
       </section>
@@ -525,7 +525,7 @@ export default function FrostCalculator() {
             const status = plantStatus(plant)
             const isExpanded = expandedPlant === plant.name
             const catColor =
-              plant.category === 'tender' ? 'var(--eggplant)' :
+              plant.category === 'tender' ? 'var(--rust)' :
               plant.category === 'semi-hardy' ? 'var(--sunflower)' : 'var(--green)'
             return (
               <button
@@ -679,7 +679,7 @@ function StatusBadge({ status }: { status: Status }) {
   const { label, color, bg, bd } =
     status === 'safe'   ? { label: 'Likely fine',       color: 'var(--green)',    bg: 'rgba(44,85,48,0.1)',   bd: 'rgba(44,85,48,0.3)' } :
     status === 'risk'   ? { label: 'At risk',           color: 'var(--sunflower)', bg: 'rgba(217,148,16,0.1)', bd: 'rgba(217,148,16,0.3)' } :
-                          { label: 'Will not survive',  color: 'var(--eggplant)',    bg: 'rgba(119,76,134,0.1)',  bd: 'rgba(119,76,134,0.3)' }
+                          { label: 'Will not survive',  color: 'var(--rust)',    bg: 'rgba(181,71,14,0.1)',  bd: 'rgba(181,71,14,0.3)' }
   return (
     <span style={{
       fontFamily: 'var(--font-sans)',

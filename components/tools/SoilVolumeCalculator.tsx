@@ -521,7 +521,7 @@ export default function SoilVolumeCalculator() {
                 }}>{a.name}</h3>
                 <AmendmentField label="Rate"        color="var(--green)"     text={a.rate} />
                 <AmendmentField label="What it does" color="var(--ink-soft)" text={a.does} />
-                <AmendmentField label="Watch out"   color="var(--eggplant)"    text={a.caution} />
+                <AmendmentField label="Watch out"   color="var(--rust)"        text={a.caution} />
                 <AmendmentField label="Good for"    color="var(--ink-muted)" text={a.good_for} />
               </div>
             ))}
