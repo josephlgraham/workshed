@@ -368,85 +368,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ============ COMMUNITY ============ */}
-      <section style={{
-        background: 'var(--paper-tint)',
-        borderTop: '1px solid var(--rule)',
-        borderBottom: '1px solid var(--rule)',
-        padding: '4rem 2.5rem',
-      }}>
-        <div style={{ maxWidth: 720, margin: '0 auto', textAlign: 'center' }}>
-          <div style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '0.7rem',
-            fontWeight: 600,
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-            color: 'var(--rust)',
-            marginBottom: '1.5rem',
-          }}>Let&rsquo;s plan together</div>
-          <h3 style={{
-            fontFamily: 'var(--font-serif)',
-            fontWeight: 400,
-            fontSize: 'clamp(1.75rem, 3vw, 2.5rem)',
-            lineHeight: 1.15,
-            letterSpacing: '-0.015em',
-            color: 'var(--ink)',
-            marginBottom: '1rem',
-          }}>Get the next piece in your inbox.</h3>
-          <p style={{
-            fontFamily: 'var(--font-serif)',
-            fontSize: '1.05rem',
-            lineHeight: 1.55,
-            color: 'var(--ink-soft)',
-            marginBottom: '2rem',
-          }}>
-            Monthly-ish. New tools, what&rsquo;s working in the garden, and the occasional weird old manual worth your time.
-          </p>
-          <div style={{ display: 'flex', gap: '0.5rem', maxWidth: 460, margin: '0 auto' }}>
-            <input type="email" placeholder="you@somewhere.com" aria-label="Email address" style={{
-              flex: 1,
-              padding: '0.85rem 1rem',
-              border: '1px solid var(--rule)',
-              background: 'var(--paper)',
-              color: 'var(--ink)',
-              fontFamily: 'var(--font-serif)',
-              fontSize: '1rem',
-              borderRadius: 2,
-            }} className="ws-email-input" />
-            <button type="button" style={{
-              padding: '0.85rem 1.5rem',
-              background: 'var(--ink)',
-              color: 'var(--paper)',
-              border: '1px solid var(--ink)',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '0.72rem',
-              fontWeight: 600,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              cursor: 'pointer',
-              borderRadius: 2,
-              transition: 'background 0.2s',
-            }} className="ws-email-btn">Subscribe</button>
-          </div>
-          <div style={{
-            marginTop: '1rem',
-            fontFamily: 'var(--font-sans)',
-            fontSize: '0.7rem',
-            fontWeight: 500,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: 'var(--ink-muted)',
-          }}>Free · No spam · Unsubscribe anytime</div>
-        </div>
-      </section>
-
       <style>{`
         .ws-featured:hover { border-color: var(--green) !important; transform: translateY(-2px); box-shadow: 0 12px 28px var(--shadow); }
         .ws-tool-card { background: var(--card); text-decoration: none; color: inherit; }
         .ws-tool-card:hover { border-color: var(--green) !important; transform: translateY(-2px); box-shadow: 0 8px 20px var(--shadow); }
-        .ws-email-input:focus { outline: none; border-color: var(--green); }
-        .ws-email-btn:hover { background: var(--green) !important; border-color: var(--green) !important; }
         @media (max-width: 900px) {
           .ws-tools-head { grid-template-columns: 1fr !important; gap: 1.5rem !important; }
           .ws-tools-grid { grid-template-columns: 1fr 1fr !important; }
