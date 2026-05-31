@@ -52,8 +52,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;0,600;0,700;0,800;1,600;1,700&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Whisper&display=swap"
           rel="stylesheet"
         />
-        {/* Prevent theme flash — reads localStorage before first paint */}
-        <script dangerouslySetInnerHTML={{ __html: `(function(){var s=localStorage.getItem('workshed-theme');if(s)document.documentElement.setAttribute('data-theme',s);})();` }} />
+        {/* Resolve theme before first paint to avoid a flash. Default to dark;
+            an explicit user choice saved in localStorage wins. */}
+        <script dangerouslySetInnerHTML={{ __html: `(function(){try{var s=localStorage.getItem('workshed-theme')||'dark';document.documentElement.setAttribute('data-theme',s);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();` }} />
         {/* Intro animation: play once per browser, gate before first paint */}
         <script dangerouslySetInnerHTML={{ __html: `(function(){try{var seen=localStorage.getItem('workshed-seen-intro');var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;document.documentElement.setAttribute('data-intro',(seen||rm)?'done':'pending');}catch(e){document.documentElement.setAttribute('data-intro','done');}})();` }} />
       </head>

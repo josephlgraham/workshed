@@ -247,7 +247,7 @@ a:hover > .ws-arrow,
   grid-area: 1 / 1;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(3.25rem, 9.5vw, 6.5rem);
+  font-size: clamp(2.5rem, 11vw, 6.5rem);
   line-height: 0.85;
   letter-spacing: -0.035em;
   opacity: 0;
@@ -341,4 +341,12 @@ a:hover > .ws-arrow,
 }
 .ws-section[open] > summary::after {
   content: '−';
+}
+
+/* ── Intent search: shrink type on narrow screens so the placeholder fits ── */
+@media (max-width: 600px) {
+  .ws-intent-box { padding: 0.7rem 0.8rem; gap: 0.3rem; }
+  .ws-intent-box > span { font-size: 0.9rem !important; }
+  #ws-intent-input { font-size: 0.9rem !important; }
+  #ws-intent-input::placeholder { font-size: 0.9rem; }
 }

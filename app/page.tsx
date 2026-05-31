@@ -92,11 +92,6 @@ export default function HomePage() {
                     fontSize: '1.1rem', color: b.accent,
                   }}>{b.tagline}</span>
                 </div>
-                <a href={`/${b.id}`} className="ws-home-more" style={{
-                  fontFamily: 'var(--font-sans)', fontSize: '0.72rem', fontWeight: 600,
-                  letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--ink)',
-                  textDecoration: 'none', whiteSpace: 'nowrap',
-                }}>Enter {b.label} <span className="ws-arrow">→</span></a>
               </div>
               <p style={{
                 fontFamily: 'var(--font-serif)', fontSize: '1rem', lineHeight: 1.55,
@@ -162,7 +157,7 @@ export default function HomePage() {
         .ws-home-card img { transition: transform 0.5s var(--ease-default); }
         .ws-home-card:hover { border-color: var(--accent, var(--green)) !important; transform: translateY(-2px); box-shadow: 0 8px 20px var(--shadow); }
         .ws-home-card:hover img { transform: scale(1.045); }
-        .ws-home-more { border-bottom: 2px solid var(--rust); padding-bottom: 0.2rem; }
+        .ws-home-more { border-bottom: 2px solid var(--accent, var(--rust)); padding-bottom: 0.2rem; }
         .ws-home-more:hover { color: var(--accent, var(--green)) !important; }
         .ws-home-note:hover .ws-home-note-h { color: var(--green); }
         @media (max-width: 900px) {

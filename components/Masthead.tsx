@@ -71,10 +71,11 @@ export default function Masthead() {
             <div className="ws-wordmark" aria-hidden="true" style={{
               fontFamily: 'var(--font-display)',
               fontWeight: 800,
-              fontSize: 'clamp(3.25rem, 9.5vw, 6.5rem)',
+              fontSize: 'clamp(2.5rem, 11vw, 6.5rem)',
               lineHeight: 0.85,
               color: 'var(--ink)',
               display: 'inline-block',
+              whiteSpace: 'nowrap',
             }}>
               {'WORKSHED'.split('').map((ch, i) => (
                 <span
