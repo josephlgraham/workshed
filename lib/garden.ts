@@ -87,9 +87,9 @@ export function getArticlesByBucket(bucket: Bucket, status?: Article['status']):
 
 /** The recycling sorting game. Featured in Grow. */
 export const sortGame = {
-  title: 'Sort It! — the recycling game',
+  title: 'Sort It! · the recycling game',
   href: '/games/sort-it.html',
-  blurb: 'Ten items, four bins. Figure out where each one really goes, and why.',
+  blurb: 'Ten things from the kitchen and the yard. Four bins. A couple of them will fool you.',
   bucket: 'grow' as Bucket,
 }
 

@@ -4,9 +4,9 @@ import {
   getBucketMeta,
   getToolsByBucket,
   getArticlesByBucket,
-  sortGame,
 } from '@/lib/garden'
 import WhimsyWord from '@/components/WhimsyWord'
+import SortItCallout from '@/components/SortItCallout'
 
 const GRADIENTS: Record<string, string> = {
   water: 'radial-gradient(ellipse at 50% 30%, rgba(120,160,200,0.6) 0%, transparent 60%), linear-gradient(180deg, #5a7a90 0%, #3a5a70 50%, #1a3040 100%)',
@@ -36,8 +36,8 @@ function ToolCard({ tool }: { tool: Tool }) {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: badge.color, background: badge.bg, border: `1px solid ${badge.border}`, padding: '0.15rem 0.45rem', borderRadius: 9999 }}>{badge.label}</span>
         </div>
-        <h3 style={{ fontFamily: 'var(--font-serif)', fontWeight: 600, fontSize: '1.15rem', lineHeight: 1.15, color: 'var(--ink)', letterSpacing: '-0.01em' }}>{tool.label}</h3>
-        <p style={{ fontFamily: 'var(--font-serif)', fontSize: '0.88rem', lineHeight: 1.5, color: 'var(--ink-soft)', margin: 0 }}>{tool.blurb}</p>
+        <h3 style={{ fontFamily: 'var(--font-serif)', fontWeight: 600, fontSize: '1.15rem', lineHeight: 1.15, color: 'var(--ink)', letterSpacing: '-0.01em', textWrap: 'pretty' }}>{tool.label}</h3>
+        <p style={{ fontFamily: 'var(--font-serif)', fontSize: '0.88rem', lineHeight: 1.5, color: 'var(--ink-soft)', margin: 0, textWrap: 'pretty' }}>{tool.blurb}</p>
       </div>
     </>
   )
@@ -75,7 +75,7 @@ export default function BucketHub({ bucket }: { bucket: Bucket }) {
         </div>
         <p style={{
           fontFamily: 'var(--font-serif)', fontSize: '1.1rem', lineHeight: 1.6,
-          color: 'var(--ink-soft)', maxWidth: '60ch', marginTop: '1rem',
+          color: 'var(--ink-soft)', maxWidth: '60ch', marginTop: '1rem', textWrap: 'pretty',
         }}>{meta.blurb}</p>
       </header>
 
@@ -89,17 +89,7 @@ export default function BucketHub({ bucket }: { bucket: Bucket }) {
 
       {/* ── Featured game (Grow only) — sits under the tools ── */}
       {bucket === 'grow' && (
-        <a href={sortGame.href} className="ws-bucket-featured" style={{
-          display: 'flex', flexDirection: 'column', justifyContent: 'center',
-          gap: '0.6rem', padding: '2rem 2.25rem', marginBottom: (plannedTools.length || articles.length) ? '4rem' : 0,
-          background: 'var(--paper-tint)', border: '2px solid var(--sunflower)',
-          textDecoration: 'none', color: 'var(--ink)',
-          transition: 'all 0.25s',
-        }}>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--green)' }}>Featured · Play</span>
-          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.6rem', lineHeight: 1.1 }}>{sortGame.title}</span>
-          <span style={{ fontFamily: 'var(--font-serif)', fontSize: '0.95rem', lineHeight: 1.5, color: 'var(--ink-soft)', maxWidth: '60ch' }}>{sortGame.blurb}</span>
-        </a>
+        <SortItCallout marginBottom={(plannedTools.length || articles.length) ? '4rem' : 0} />
       )}
 
       {/* ── On the way (planned, grayed out) ── */}
@@ -127,8 +117,8 @@ export default function BucketHub({ bucket }: { bucket: Bucket }) {
                   <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.62rem', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: linked ? meta.accent : 'var(--ink-muted)', marginBottom: '0.5rem' }}>
                     {linked ? 'Read' : 'Planned'}
                   </div>
-                  <h3 style={{ fontFamily: 'var(--font-serif)', fontWeight: 600, fontSize: '1.3rem', lineHeight: 1.2, color: 'var(--ink)', marginBottom: '0.35rem', letterSpacing: '-0.005em' }} className="ws-bucket-article-h">{a.title}</h3>
-                  <p style={{ fontFamily: 'var(--font-serif)', fontSize: '0.95rem', lineHeight: 1.5, color: 'var(--ink-soft)', maxWidth: '65ch' }}>{a.blurb}</p>
+                  <h3 style={{ fontFamily: 'var(--font-serif)', fontWeight: 600, fontSize: '1.3rem', lineHeight: 1.2, color: 'var(--ink)', marginBottom: '0.35rem', letterSpacing: '-0.005em', textWrap: 'pretty' }} className="ws-bucket-article-h">{a.title}</h3>
+                  <p style={{ fontFamily: 'var(--font-serif)', fontSize: '0.95rem', lineHeight: 1.5, color: 'var(--ink-soft)', maxWidth: '65ch', textWrap: 'pretty' }}>{a.blurb}</p>
                 </>
               )
               const rowStyle: React.CSSProperties = { display: 'block', padding: '1.5rem 0', borderBottom: '1px solid var(--rule)', textDecoration: 'none', color: 'inherit', opacity: linked ? 1 : 0.75 }
@@ -144,7 +134,6 @@ export default function BucketHub({ bucket }: { bucket: Bucket }) {
         .ws-bucket-card img { transition: transform 0.5s var(--ease-default); }
         .ws-bucket-card:hover { border-color: var(--accent, var(--green)) !important; transform: translateY(-2px); box-shadow: 0 8px 20px var(--shadow); }
         .ws-bucket-card:hover img { transform: scale(1.045); }
-        .ws-bucket-featured:hover { transform: translateY(-2px); box-shadow: 0 10px 24px var(--shadow); }
         .ws-bucket-article:hover .ws-bucket-article-h { color: var(--accent, var(--green)); }
         @media (max-width: 900px) { .ws-bucket-grid { grid-template-columns: 1fr 1fr !important; } }
         @media (max-width: 600px) { .ws-bucket-grid { grid-template-columns: 1fr !important; } }

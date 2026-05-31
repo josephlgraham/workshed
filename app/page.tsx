@@ -1,8 +1,9 @@
 import Image from 'next/image'
 import type { Bucket, Tool } from '@/lib/types'
-import { BUCKETS, getToolsByBucket, sortGame } from '@/lib/garden'
+import { BUCKETS, getToolsByBucket } from '@/lib/garden'
 import IntentSearch from '@/components/IntentSearch'
 import WhimsyWord from '@/components/WhimsyWord'
+import SortItCallout from '@/components/SortItCallout'
 
 export const metadata = { title: "Workshed · Plan, build, grow." }
 
@@ -30,8 +31,8 @@ function SnippetCard({ tool, priority }: { tool: Tool; priority?: boolean }) {
         {tool.photo && <Image src={tool.photo} alt={tool.label} fill priority={priority} sizes="(max-width: 600px) 100vw, 33vw" style={{ objectFit: 'cover' }} />}
       </div>
       <div style={{ padding: '1rem 1rem 1.25rem', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-        <h3 style={{ fontFamily: 'var(--font-serif)', fontWeight: 600, fontSize: '1.1rem', lineHeight: 1.15, color: 'var(--ink)', letterSpacing: '-0.01em' }}>{tool.label}</h3>
-        <p style={{ fontFamily: 'var(--font-serif)', fontSize: '0.85rem', lineHeight: 1.5, color: 'var(--ink-soft)', margin: 0 }}>{tool.blurb}</p>
+        <h3 style={{ fontFamily: 'var(--font-serif)', fontWeight: 600, fontSize: '1.1rem', lineHeight: 1.15, color: 'var(--ink)', letterSpacing: '-0.01em', textWrap: 'pretty' }}>{tool.label}</h3>
+        <p style={{ fontFamily: 'var(--font-serif)', fontSize: '0.85rem', lineHeight: 1.5, color: 'var(--ink-soft)', margin: 0, textWrap: 'pretty' }}>{tool.blurb}</p>
       </div>
     </>
   )
@@ -99,7 +100,7 @@ export default function HomePage() {
               </div>
               <p style={{
                 fontFamily: 'var(--font-serif)', fontSize: '1rem', lineHeight: 1.55,
-                color: 'var(--ink-soft)', maxWidth: '60ch', marginBottom: '1.75rem',
+                color: 'var(--ink-soft)', maxWidth: '60ch', marginBottom: '1.75rem', textWrap: 'pretty',
               }}>{b.blurb}</p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }} className="ws-home-grid">
                 {tools.map((t, tIndex) => <SnippetCard key={t.slug} tool={t} priority={bIndex === 0 && tIndex === 0} />)}
@@ -111,16 +112,7 @@ export default function HomePage() {
 
       {/* ============ GAME CALLOUT ============ */}
       <div style={{ maxWidth: 1300, margin: '0 auto', padding: '0 2.5rem 4.5rem' }}>
-        <a href={sortGame.href} className="ws-home-game" style={{
-          display: 'flex', flexDirection: 'column', justifyContent: 'center',
-          gap: '0.6rem', padding: '2rem 2.25rem',
-          background: 'var(--paper-tint)', border: '2px solid var(--sunflower)',
-          textDecoration: 'none', color: 'var(--ink)', transition: 'all 0.25s',
-        }}>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--green)' }}>Featured · Play</span>
-          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.6rem', lineHeight: 1.1 }}>{sortGame.title}</span>
-          <span style={{ fontFamily: 'var(--font-serif)', fontSize: '0.95rem', lineHeight: 1.5, color: 'var(--ink-soft)', maxWidth: '60ch' }}>{sortGame.blurb}</span>
-        </a>
+        <SortItCallout />
       </div>
 
       {/* ============ PHOTO BREAK ============ */}
@@ -156,11 +148,11 @@ export default function HomePage() {
           <h2 style={{ fontFamily: 'var(--font-serif)', fontWeight: 600, fontSize: '1.75rem', letterSpacing: '-0.01em', color: 'var(--ink)' }}>From the field notes</h2>
           <a href="/field" className="ws-home-more" style={{ fontFamily: 'var(--font-sans)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--ink)', textDecoration: 'none' }}>All notes <span className="ws-arrow">→</span></a>
         </div>
-        <a href="/field" className="ws-home-note" style={{ display: 'block', textDecoration: 'none', color: 'inherit', borderTop: '2px solid var(--ink)', paddingTop: '1.5rem', maxWidth: '70ch' }}>
-          <span style={{ display: 'inline-block', fontFamily: 'var(--font-sans)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--paper)', background: 'var(--green)', padding: '0.3rem 0.6rem', marginBottom: '1rem' }}>Project · In Progress</span>
-          <h3 style={{ fontFamily: 'var(--font-serif)', fontWeight: 600, fontSize: 'clamp(1.6rem, 3.5vw, 2.25rem)', lineHeight: 1.1, color: 'var(--ink)', marginBottom: '0.75rem', letterSpacing: '-0.015em' }} className="ws-home-note-h">The greenhouse build. Patience, scrap lumber, and a storm door</h3>
+        <a href="/field/a-ram-pump-for-the-stream" className="ws-home-note" style={{ display: 'block', textDecoration: 'none', color: 'inherit', borderTop: '2px solid var(--ink)', paddingTop: '1.5rem', maxWidth: '70ch' }}>
+          <span style={{ display: 'inline-block', fontFamily: 'var(--font-sans)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--paper)', background: 'var(--green)', padding: '0.3rem 0.6rem', marginBottom: '1rem' }}>Field Note · Build</span>
+          <h3 style={{ fontFamily: 'var(--font-serif)', fontWeight: 600, fontSize: 'clamp(1.6rem, 3.5vw, 2.25rem)', lineHeight: 1.1, color: 'var(--ink)', marginBottom: '0.75rem', letterSpacing: '-0.015em' }} className="ws-home-note-h">A ram pump for the stream</h3>
           <p style={{ fontFamily: 'var(--font-serif)', fontSize: '1.05rem', lineHeight: 1.6, color: 'var(--ink-soft)' }}>
-            Crushed-rock floor, a salvaged storm door, a potbelly stove for cold mornings, and eventually solar-powered everything. Here is the full plan and how I am sequencing it.
+            No electricity, no fuel. Just the weight of falling water pushing a little of it uphill. Building one from brass fittings and testing it on the creek.
           </p>
         </a>
       </section>
@@ -173,7 +165,6 @@ export default function HomePage() {
         .ws-home-more { border-bottom: 2px solid var(--rust); padding-bottom: 0.2rem; }
         .ws-home-more:hover { color: var(--accent, var(--green)) !important; }
         .ws-home-note:hover .ws-home-note-h { color: var(--green); }
-        .ws-home-game:hover { transform: translateY(-2px); box-shadow: 0 10px 24px var(--shadow); }
         @media (max-width: 900px) {
           .ws-home-grid { grid-template-columns: 1fr 1fr !important; }
           .ws-photo-break-inner { grid-template-columns: 1fr !important; gap: 2rem !important; }
