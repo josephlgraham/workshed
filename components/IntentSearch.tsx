@@ -4,15 +4,18 @@ import { useMemo, useRef, useState } from 'react'
 import type { SearchArea, SearchEntry } from '@/lib/types'
 import { getSearchIndex } from '@/lib/garden'
 
-// Words that carry no signal in an "I want to…" phrase.
+// Words that carry no signal in an "I want to…" phrase. Note: "plant" is NOT
+// here — it's a real verb people search with ("plant eggplants"), so it's
+// routed through SYNONYMS to the Grow pillar instead of being dropped.
 const STOP = new Set([
   'i', 'want', 'to', 'a', 'an', 'the', 'my', 'me', 'how', 'do', 'can', 'in',
-  'of', 'for', 'and', 'with', 'some', 'need', 'help', 'garden', 'plant', 'plants',
+  'of', 'for', 'and', 'with', 'some', 'need', 'help', 'garden',
 ])
 
 // Common ways people phrase a need that don't literally appear in our copy.
 // Each query word also matches the listed alternates (so "bugs" finds "pest").
 const SYNONYMS: Record<string, string[]> = {
+  // Nouns / conditions
   bug: ['pest'], bugs: ['pest'], insect: ['pest'], insects: ['pest'], critter: ['pest'],
   dirt: ['soil'], ground: ['soil'],
   veggie: ['vegetable'], veggies: ['vegetable'],
@@ -24,6 +27,28 @@ const SYNONYMS: Record<string, string[]> = {
   layout: ['spacing', 'planner'], spacing: ['layout'],
   recycle: ['recycling', 'sort'], trash: ['waste'], garbage: ['waste'],
   buy: ['gear'], shop: ['gear'], shopping: ['gear'], recommend: ['gear'], recommendation: ['gear'],
+
+  // Verbs — planting & growing → the Grow pillar and planting/timing tools.
+  plant: ['grow'], plants: ['grow'], planting: ['grow'],
+  sow: ['seed', 'plant'], sowing: ['seed', 'plant'],
+  transplant: ['plant', 'seed'], transplanting: ['plant', 'seed'],
+  propagate: ['grow', 'seed'], cultivate: ['grow'],
+  grow: ['plant'], growing: ['plant'], raise: ['grow'],
+  harvest: ['yield'], harvesting: ['yield'], pick: ['harvest', 'yield'],
+  prune: ['grow'], pruning: ['grow'], trim: ['grow'],
+
+  // Verbs — making things → the Build pillar.
+  make: ['build'], making: ['build'], construct: ['build'], constructing: ['build'],
+  assemble: ['build'], install: ['build'], installing: ['build'],
+  dig: ['build', 'bed'], digging: ['build', 'bed'],
+
+  // Verbs — deciding things → the Plan pillar.
+  design: ['plan', 'layout'], designing: ['plan', 'layout'],
+  schedule: ['plan', 'timing'], scheduling: ['plan', 'timing'], arrange: ['layout', 'plan'],
+
+  // Verbs — care, protection, and collecting water.
+  protect: ['frost'], protecting: ['frost'], kill: ['pest'], spray: ['pest'],
+  collect: ['rainwater'], collecting: ['rainwater'], catch: ['rainwater'], capture: ['rainwater'],
 }
 
 const AREA_LABEL: Record<SearchArea, string> = {

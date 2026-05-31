@@ -3,7 +3,7 @@
   <channel>
     <title>Workshed</title>
     <link>https://workshed.garden</link>
-    <description>Calculators and field notes for the obsessive gardener.</description>
+    <description>Calculators and field notes for the serious gardener.</description>
     <language>en-us</language>
     <copyright>Workshed</copyright>
     <atom:link href="https://workshed.garden/feed.xml" rel="self" type="application/rss+xml" />
@@ -21,7 +21,7 @@
       <link>https://workshed.garden</link>
       <guid isPermaLink="false">workshed-launch-announce</guid>
       <pubDate>Tue, 26 May 2026 12:00:00 GMT</pubDate>
-      <description>Calculators and field notes for the obsessive gardener. Subscribe now and the launch post lands in your reader.</description>
+      <description>Calculators and field notes for the serious gardener. Subscribe now and the launch post lands in your reader.</description>
       <category>Announcements</category>
     </item>
   </channel>

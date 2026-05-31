@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     default: "Workshed · Let's plan together.",
     template: '%s · Workshed',
   },
-  description: 'Calculators and tools for the obsessive gardener.',
+  description: 'Calculators and tools for the serious gardener.',
   alternates: {
     canonical: '/',
     types: { 'application/rss+xml': '/feed.xml' },
@@ -24,13 +24,13 @@ export const metadata: Metadata = {
     siteName: 'Workshed',
     url: SITE_URL,
     title: "Workshed · Let's plan together.",
-    description: 'Calculators and tools for the obsessive gardener.',
+    description: 'Calculators and tools for the serious gardener.',
     images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Workshed' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: "Workshed · Let's plan together.",
-    description: 'Calculators and tools for the obsessive gardener.',
+    description: 'Calculators and tools for the serious gardener.',
     images: ['/og.png'],
   },
   icons: {
