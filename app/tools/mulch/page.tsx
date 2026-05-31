@@ -62,8 +62,8 @@ export default function MulchPage() {
 
       {/* Pull quote */}
       <blockquote style={{
-        borderLeft: '3px solid var(--green)',
-        paddingLeft: '1.25rem',
+        border: '2px solid var(--green)',
+        padding: '1.25rem 1.5rem',
         margin: '0 0 3rem',
         fontFamily: 'var(--font-serif)',
         fontStyle: 'italic',

@@ -38,17 +38,52 @@ export interface ToolEntry {
 export type ToolStatus = 'live' | 'soon' | 'horizon'
 export type ToolCategory = 'soil' | 'water' | 'planting' | 'planning' | 'structure' | 'misc'
 
+/** The three pillars the site is organized around. */
+export type Bucket = 'plan' | 'build' | 'grow'
+
 export interface Tool {
   slug: string
   href: string
   label: string
   blurb: string
   category: ToolCategory
+  bucket: Bucket
   status: ToolStatus
   num: string
   photo?: string
   gradient?: 'water' | 'timing' | 'soil' | 'planning' | 'compost'
   featured?: boolean
+  /** Extra phrases the "I want to…" search should match, beyond label/blurb. */
+  intents?: string[]
+}
+
+export type ArticleStatus = 'live' | 'planned'
+
+/** Longer-form how-to writing that lives inside a bucket (distinct from the
+ *  chronological Field Notes journal). */
+export interface Article {
+  slug: string
+  href: string
+  title: string
+  blurb: string
+  bucket: Bucket
+  status: ArticleStatus
+  intents?: string[]
+}
+
+/** The areas the intent search can point you at: the three pillars plus the
+ *  two cross-cutting sections (Gear, Field Notes). Drives the result chip. */
+export type SearchArea = Bucket | 'gear' | 'field'
+
+/** Flattened entry the client-side intent search indexes over. */
+export interface SearchEntry {
+  title: string
+  href: string
+  blurb: string
+  area: SearchArea
+  kind: 'tool' | 'article' | 'game' | 'section'
+  status: 'live' | 'soon' | 'horizon' | 'planned'
+  keywords: string      // joined, lowercased text the search tokenizes and stems
 }
 
 export interface FieldNotesEntry {

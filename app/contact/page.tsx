@@ -50,7 +50,7 @@ export default function ContactPage() {
 
         <p>
           <a
-            href="mailto:josephlgraham@gmail.com"
+            href="mailto:workshedgarden@gmail.com"
             style={{
               fontFamily: 'var(--font-mono, monospace)',
               fontSize: '0.95rem',
@@ -62,7 +62,7 @@ export default function ContactPage() {
               textUnderlineOffset: '2px',
             }}
           >
-            josephlgraham@gmail.com
+            workshedgarden@gmail.com
           </a>
         </p>
 

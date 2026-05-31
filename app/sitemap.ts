@@ -7,11 +7,15 @@ const SITE_URL = 'https://workshed.garden'
 const STATIC_ROUTES = [
   '',
   '/about',
+  '/build',
   '/colophon',
   '/contact',
   '/disclosure',
   '/field',
   '/garden',
+  '/gear',
+  '/grow',
+  '/plan',
   '/privacy',
   '/tools',
   '/tools/compost-ratio',
@@ -26,7 +30,7 @@ const STATIC_ROUTES = [
 ]
 
 // Keep in sync with NOTES in app/field/[slug]/page.tsx
-const FIELD_NOTE_SLUGS = ['artichokes-from-seed-week-3']
+const FIELD_NOTE_SLUGS = ['a-ram-pump-for-the-stream']
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date()

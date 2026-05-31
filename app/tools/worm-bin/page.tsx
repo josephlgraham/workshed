@@ -62,8 +62,8 @@ export default function WormBinPage() {
 
       {/* Pull quote */}
       <blockquote style={{
-        borderLeft: '3px solid var(--green)',
-        paddingLeft: '1.25rem',
+        border: '2px solid var(--green)',
+        padding: '1.25rem 1.5rem',
         margin: '2rem 0 3rem',
         fontFamily: 'var(--font-serif)',
         fontStyle: 'italic',
@@ -137,8 +137,10 @@ export default function WormBinPage() {
         </Section>
 
         <Figure
+          src="/photos/worms.jpg"
+          alt="A worm working through dark garden soil"
           gradient="soil"
-          caption="Dark, crumbly, and smelling of earth. Finished castings look nothing like what went in."
+          caption="Not a red wiggler. This is the garden kind, working the beds at its own slow pace."
         />
 
         <Section title="What to feed and what to skip">

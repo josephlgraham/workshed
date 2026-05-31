@@ -63,8 +63,8 @@ export default function CompostRatioPage() {
 
       {/* Pull quote */}
       <blockquote style={{
-        borderLeft: '3px solid var(--green)',
-        paddingLeft: '1.25rem',
+        border: '2px solid var(--green)',
+        padding: '1.25rem 1.5rem',
         margin: '2rem 0 3rem',
         fontFamily: 'var(--font-serif)',
         fontStyle: 'italic',
@@ -139,47 +139,30 @@ export default function CompostRatioPage() {
 
         <Section title="What not to put in">
           <p>
-            Most things that come out of a vegetable garden or kitchen are fair
-            game. A few categories cause real problems.
+            Most things from a vegetable garden or kitchen are fair game. A few
+            categories cause real problems. Meat, fish, bones, dairy, and cooking
+            fats attract pests and create serious odor before they break down —
+            even small amounts are enough to draw animals. Salty foods like chips
+            or pickles are toxic to worms at the concentrations that form in a
+            pile, and bread tends to attract fruit flies, so bury it deep or skip
+            it.
           </p>
-          <ul style={{ paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <li>
-              <strong>Meat, fish, and bones.</strong> Attract pests and create
-              serious odor. Even small amounts are enough to draw animals to the
-              pile.
-            </li>
-            <li>
-              <strong>Dairy and cooking fats.</strong> Same result. Fats and
-              proteins slow decomposition and make the pile smell before they
-              break down.
-            </li>
-            <li>
-              <strong>Diseased plant material.</strong> Disease spores can survive
-              a pile that never gets fully hot. If the plant had powdery mildew,
-              late blight, or anything that spread fast, do not compost it.
-              Bag it.
-            </li>
-            <li>
-              <strong>Plants that have gone to seed.</strong> Unless the pile
-              reliably hits 130°F or higher, seeds may survive and sprout
-              wherever you spread the finished compost.
-            </li>
-            <li>
-              <strong>Pet waste from dogs and cats.</strong> Pathogens. Chicken
-              manure is fine and composted quickly; cat and dog waste is not.
-            </li>
-            <li>
-              <strong>Treated wood or sawdust from treated lumber.</strong>{' '}
-              Preservatives are toxic to soil organisms and persist in the
-              finished compost. Sawdust from untreated wood is a high-carbon
-              brown and works well.
-            </li>
-            <li>
-              <strong>Invasive plants.</strong> Some species can re-establish
-              from root fragments or stem nodes even after dying. If you are not
-              confident the pile heats consistently, do not risk it.
-            </li>
-          </ul>
+          <p>
+            Diseased plant material is the other main one. If the plant had
+            powdery mildew, late blight, or anything that spread fast through the
+            bed, bag it rather than composting it. Disease spores can survive a
+            pile that never gets fully hot, and plants that have gone to seed
+            carry the same risk. A hot pile handles both; a cold one does not.
+            Same logic applies to invasive plants — if you are not confident the
+            pile heats consistently, do not risk it.
+          </p>
+          <p>
+            Treated wood and sawdust from treated lumber belong nowhere near a
+            pile. The preservatives are toxic to soil organisms and persist in
+            the finished compost. Sawdust from untreated firewood is a
+            high-carbon brown and works well. Pet waste from dogs and cats
+            carries pathogens; chicken manure composts quickly and is fine.
+          </p>
         </Section>
 
         <Section title="Pile size and heat retention">

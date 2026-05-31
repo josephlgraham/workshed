@@ -62,8 +62,8 @@ export default function HugelkulturPage() {
 
       {/* Pull quote */}
       <blockquote style={{
-        borderLeft: '3px solid var(--green)',
-        paddingLeft: '1.25rem',
+        border: '2px solid var(--green)',
+        padding: '1.25rem 1.5rem',
         margin: '2rem 0 3rem',
         fontFamily: 'var(--font-serif)',
         fontStyle: 'italic',
@@ -126,10 +126,10 @@ export default function HugelkulturPage() {
         </Section>
 
         <Figure
-          src="/photos/hugelkultur.png"
-          alt="Hugelkultur mound bed with layered wood and soil"
+          src="/photos/hugelkultur.jpg"
+          alt="A half-rotted log breaking down in the grass"
           gradient="soil"
-          caption="Logs at the base, branches filling gaps, soil and compost on top. The wood layer is the engine."
+          caption="A punky, half-rotted log like this is the engine of a hugel bed. Buried deep, it holds water and feeds the soil for years."
         />
 
         <Section title="How to build it">

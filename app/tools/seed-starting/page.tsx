@@ -62,8 +62,8 @@ export default function SeedStartingPage() {
 
       {/* Pull quote */}
       <blockquote style={{
-        borderLeft: '3px solid var(--green)',
-        paddingLeft: '1.25rem',
+        border: '2px solid var(--green)',
+        padding: '1.25rem 1.5rem',
         margin: '0 0 3rem',
         fontFamily: 'var(--font-serif)',
         fontStyle: 'italic',
@@ -163,38 +163,28 @@ export default function SeedStartingPage() {
         </Section>
 
         <Section title="Common mistakes">
-          <ul style={ulStyle}>
-            <li>
-              <strong>Planting too early.</strong> The most common mistake.
-              Spring fever is real and patience is hard. Tomatoes set out two
-              weeks early in cold soil do not get a head start, they get
-              stunted. Peppers go on hunger strike. Wait for soil temp, not air
-              temp.
-            </li>
-            <li>
-              <strong>Skipping the hardening-off step.</strong> Indoor seedlings
-              get killed or stunted by direct exposure to wind and sun. Seven
-              to ten days of gradual transition is non-negotiable.
-            </li>
-            <li>
-              <strong>Ignoring soil temperature.</strong> The calendar is a
-              guide. Your soil thermometer is the truth. Beans, corn, and
-              squash all want soil at 60°F or above. Seeds in colder soil rot
-              before they germinate.
-            </li>
-            <li>
-              <strong>Starting cucurbits indoors too early.</strong> Cucumbers,
-              squash, melons, and pumpkins outgrow their pots fast. Two to
-              three weeks before transplant date is plenty. Any earlier and
-              they get root-bound, set back, or both.
-            </li>
-            <li>
-              <strong>Trusting one frost date forever.</strong> Average last
-              frost is an average. A holler microclimate can be a week off in
-              either direction. Track your own actual last frost over a few
-              years and adjust.
-            </li>
-          </ul>
+          <p>
+            Planting too early is the most common one. Spring fever is real
+            and patience is hard. Tomatoes set out two weeks early in cold soil
+            do not get a head start, they get stunted. Peppers go on hunger
+            strike. The calendar is a guide. Your soil thermometer is the truth.
+            Beans, corn, and squash all want soil at 60°F or above. Seeds in
+            colder soil rot before they germinate.
+          </p>
+          <p>
+            The second mistake is skipping hardening off. Indoor seedlings get
+            killed or set back by direct exposure to wind and sun, and seven to
+            ten days of gradual transition is non-negotiable. Related: cucumbers,
+            squash, melons, and pumpkins outgrow their pots fast. Two to three
+            weeks before transplant date is plenty. Any earlier and they get
+            root-bound, set back, or both.
+          </p>
+          <p>
+            The last one is treating your frost date as permanent. Average last
+            frost is an average. A holler microclimate can be a week off in
+            either direction. Track your own actual last frost over a few years
+            and adjust. The best gardeners are the ones who keep notes.
+          </p>
         </Section>
 
         <Section title="Zone 8a and the Deep South">
@@ -312,10 +302,3 @@ function Figure({ src, alt, gradient, caption }: {
   )
 }
 
-const ulStyle: React.CSSProperties = {
-  paddingLeft: '1.25rem',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '0.625rem',
-  margin: 0,
-}

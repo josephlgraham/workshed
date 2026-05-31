@@ -23,9 +23,11 @@ export default function Footer() {
       </div>
       <div>
         <strong style={{ display: 'block', color: 'var(--ink)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '0.75rem', fontSize: '0.68rem' }}>Sections</strong>
-        <a href="/garden" style={linkStyle} className="ws-footer-link">Garden</a>
-        <a href="/tools" style={linkStyle} className="ws-footer-link">Tools</a>
+        <a href="/plan" style={linkStyle} className="ws-footer-link">Plan</a>
+        <a href="/build" style={linkStyle} className="ws-footer-link">Build</a>
+        <a href="/grow" style={linkStyle} className="ws-footer-link">Grow</a>
         <a href="/field" style={linkStyle} className="ws-footer-link">Field Notes</a>
+        <a href="/gear" style={linkStyle} className="ws-footer-link">Gear</a>
       </div>
       <div>
         <strong style={{ display: 'block', color: 'var(--ink)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '0.75rem', fontSize: '0.68rem' }}>Notes</strong>
@@ -63,7 +65,8 @@ export default function Footer() {
         }
         .ws-footer-link { color: var(--ink-soft) !important; }
         .ws-footer-link:hover { color: var(--green) !important; }
-        .ws-colophon-link:hover { opacity: 1 !important; }
+        .ws-colophon-link { display: inline-block; }
+        .ws-colophon-link:hover { opacity: 1 !important; animation: ws-wiggle 0.5s var(--ease-default); transform-origin: 70% 70%; }
       `}</style>
     </footer>
   )

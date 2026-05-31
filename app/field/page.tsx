@@ -1,22 +1,23 @@
 export const metadata = { title: 'Field Notes · Workshed' }
 
-type SmallTagKey = 'growing' | 'watching' | 'pests' | 'reading'
+type SmallTagKey = 'growing' | 'watching' | 'pests' | 'reading' | 'building'
 const SMALL_TAG_COLORS: Record<SmallTagKey, string> = {
   growing: 'var(--green)',
   watching: 'var(--sunflower)',
   pests: 'var(--rust)',
   reading: 'var(--ink-muted)',
+  building: 'var(--rust)',
 }
 
 // Phase 1: single hardcoded entry. Phase 2: fetch from MDX files / Supabase.
 const NOTES: Array<{ slug: string; title: string; date: string; excerpt: string; tag: SmallTagKey; tagLabel: string }> = [
   {
-    slug: 'artichokes-from-seed-week-3',
-    title: 'Starting artichokes from seed, three weeks in',
-    date: '2026-04-22',
-    excerpt: 'They are alive. Reluctantly.',
-    tag: 'growing',
-    tagLabel: "What's Growing",
+    slug: 'a-ram-pump-for-the-stream',
+    title: 'A ram pump for the stream',
+    date: '2026-05-31',
+    excerpt: 'There is a stream below the house and no power within reach of it. A hydraulic ram does not need any.',
+    tag: 'building',
+    tagLabel: 'Building',
   },
 ]
 
@@ -93,7 +94,7 @@ export default function FieldPage() {
               textTransform: 'uppercase',
               color: 'var(--ink-muted)',
             }}>
-              {new Date(note.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              {new Date(note.date + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
             </div>
           </a>
         ))}

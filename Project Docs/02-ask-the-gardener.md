@@ -90,7 +90,7 @@ Page layout (top to bottom):
 5. **Results area**:
    - **Empty state** (no query yet): show 6-8 featured questions (just the first 6-8 from the data file for now).
    - **Has query, matches found**: show top 5 matches as a vertical list of result rows.
-   - **Has query, no matches**: show a `mailto:` link prompt — "Don't see your question? [Email it →](mailto:josephlgraham@gmail.com?subject=Workshed%20question)". Wording can be tightened by Joe.
+   - **Has query, no matches**: show a `mailto:` link prompt — "Don't see your question? [Email it →](mailto:workshedgarden@gmail.com?subject=Workshed%20question)". Wording can be tightened by Joe.
 6. **Each result row** displays: the question (serif, weight 600), the short answer (serif, `var(--ink-soft)`), and the CTA link with a sunflower underline. Whole row is clickable and goes to `/ask/[slug]`.
 
 Match algorithm (Phase 1):
@@ -195,5 +195,5 @@ For a dev familiar with Next.js 16 App Router, TypeScript, and React:
 
 - How many FAQs in the initial batch? (Suggested: 15-30 to make the search feel populated.)
 - Should the search input persist its query in the URL (`/ask?q=mulch`) for shareable links? Phase 2 is fine — leave a `// TODO` if not now.
-- Email for the `mailto:` fallback: `josephlgraham@gmail.com` — confirm or substitute.
+- Email for the `mailto:` fallback: `workshedgarden@gmail.com` — confirm or substitute.
 - Page intro copy: Joe will draft and paste in.

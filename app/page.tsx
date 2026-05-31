@@ -1,472 +1,185 @@
-import Link from 'next/link'
 import Image from 'next/image'
+import type { Bucket, Tool } from '@/lib/types'
+import { BUCKETS, getToolsByBucket, sortGame } from '@/lib/garden'
+import IntentSearch from '@/components/IntentSearch'
+import WhimsyWord from '@/components/WhimsyWord'
 
-export const metadata = { title: "Workshed · Let's plan together." }
+export const metadata = { title: "Workshed · Plan, build, grow." }
 
-/* Gradients shared with /tools page */
-const GRADIENTS = {
-  water: 'radial-gradient(ellipse at 30% 40%, rgba(140,180,220,0.6) 0%, transparent 50%), radial-gradient(ellipse at 70% 60%, rgba(100,130,100,0.7) 0%, transparent 55%), linear-gradient(160deg, #4a6580 0%, #2a4a3a 50%, #1a2818 100%)',
+const GRADIENTS: Record<string, string> = {
+  water: 'radial-gradient(ellipse at 50% 30%, rgba(120,160,200,0.6) 0%, transparent 60%), linear-gradient(180deg, #5a7a90 0%, #3a5a70 50%, #1a3040 100%)',
   timing: 'radial-gradient(ellipse at 60% 50%, rgba(180,140,90,0.6) 0%, transparent 60%), linear-gradient(160deg, #8a6a3a 0%, #5a4528 50%, #2a1f10 100%)',
   soil: 'radial-gradient(ellipse at 40% 60%, rgba(140,100,60,0.7) 0%, transparent 60%), linear-gradient(160deg, #6a4a2a 0%, #3a2818 50%, #1a1208 100%)',
   planning: 'radial-gradient(ellipse at 50% 40%, rgba(100,140,80,0.7) 0%, transparent 60%), linear-gradient(160deg, #5a7a3a 0%, #2a4a18 50%, #102008 100%)',
   compost: 'radial-gradient(ellipse at 50% 50%, rgba(120,80,40,0.6) 0%, transparent 60%), linear-gradient(160deg, #4a3520 0%, #2a1f10 50%, #1a1208 100%)',
 }
 
-
-type SmallTagKey = 'growing' | 'watching' | 'pests' | 'reading'
-const SMALL_TAG_COLORS: Record<SmallTagKey, string> = {
-  growing: 'var(--green)',
-  watching: 'var(--sunflower)',
-  pests: 'var(--rust)',
-  reading: 'var(--ink-muted)',
+/** Up to three tools for a bucket snippet — live first, then the rest. */
+function snippetTools(bucket: Bucket): Tool[] {
+  const all = getToolsByBucket(bucket)
+  const live = all.filter((t) => t.status === 'live')
+  const rest = all.filter((t) => t.status !== 'live')
+  return [...live, ...rest].slice(0, 3)
 }
 
-function ToolCardImg({ gradient, photo }: { gradient: keyof typeof GRADIENTS; photo?: string }) {
-  return (
-    <div style={{
-      aspectRatio: '3/2',
-      position: 'relative',
-      overflow: 'hidden',
-      background: GRADIENTS[gradient],
-    }}>
-      {photo && <Image src={photo} alt="" fill sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 25vw" style={{ objectFit: 'cover' }} />}
-    </div>
+function SnippetCard({ tool, priority }: { tool: Tool; priority?: boolean }) {
+  const linked = tool.status === 'live'
+  const inner = (
+    <>
+      <div style={{ position: 'relative', overflow: 'hidden', aspectRatio: '3/2', background: tool.photo ? '#2a3a2a' : GRADIENTS[tool.gradient ?? 'planning'] }}>
+        {tool.photo && <Image src={tool.photo} alt={tool.label} fill priority={priority} sizes="(max-width: 600px) 100vw, 33vw" style={{ objectFit: 'cover' }} />}
+      </div>
+      <div style={{ padding: '1rem 1rem 1.25rem', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+        <h3 style={{ fontFamily: 'var(--font-serif)', fontWeight: 600, fontSize: '1.1rem', lineHeight: 1.15, color: 'var(--ink)', letterSpacing: '-0.01em' }}>{tool.label}</h3>
+        <p style={{ fontFamily: 'var(--font-serif)', fontSize: '0.85rem', lineHeight: 1.5, color: 'var(--ink-soft)', margin: 0 }}>{tool.blurb}</p>
+      </div>
+    </>
   )
+  const style: React.CSSProperties = {
+    background: 'var(--card)', textDecoration: 'none', color: 'var(--ink)',
+    border: '1px solid var(--rule)', transition: 'all 0.25s', overflow: 'hidden',
+    display: 'flex', flexDirection: 'column', opacity: linked ? 1 : 0.6,
+  }
+  return linked
+    ? <a href={tool.href} style={style} className="ws-home-card">{inner}</a>
+    : <div style={style}>{inner}</div>
 }
 
 export default function HomePage() {
   return (
     <>
-    <div style={{ maxWidth: 1300, margin: '0 auto', padding: '3rem 2.5rem 5rem' }}>
-
-      {/* ============ FEATURED TOOL ============ */}
-      <div style={{ marginBottom: '4rem' }}>
-        <Link href="/tools/rainwater" style={{
-          display: 'grid',
-          gridTemplateColumns: '1.3fr 1fr',
-          background: 'var(--card)',
-          textDecoration: 'none',
-          color: 'var(--ink)',
-          border: '1px solid var(--rule)',
-          transition: 'all 0.25s',
-          overflow: 'hidden',
-        }} className="ws-featured">
-          <div style={{
-            minHeight: 320,
-            position: 'relative',
-            overflow: 'hidden',
-          }}>
-            <Image src="/photos/rainbarrel_filling.jpg" alt="Rain barrel filling" fill style={{ objectFit: 'cover' }} />
-          </div>
-          <div style={{
-            padding: '2.5rem',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-          }}>
-            <div style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '0.65rem',
-              fontWeight: 600,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: 'var(--green)',
-              marginBottom: '1rem',
-            }}>Most Used · Water</div>
-            <h2 style={{
-              fontFamily: 'var(--font-serif)',
-              fontWeight: 500,
-              fontSize: '2rem',
-              lineHeight: 1.05,
-              letterSpacing: '-0.015em',
-              color: 'var(--ink)',
-              marginBottom: '1rem',
-              fontVariationSettings: '"opsz" 96',
-            }}>Rainwater Harvest Calculator</h2>
-            <p style={{
-              fontFamily: 'var(--font-serif)',
-              fontSize: '1rem',
-              lineHeight: 1.55,
-              color: 'var(--ink-soft)',
-              marginBottom: '1.5rem',
-              flex: 1,
-            }}>
-              How much water you can capture from your roof, by month. Pick your conditions, get the answer, and see what size cistern actually makes sense for your setup.
-            </p>
-            <span style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '0.72rem',
-              fontWeight: 600,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: 'var(--ink)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-            }}>Open the calculator →</span>
-          </div>
-        </Link>
-      </div>
-
-      {/* ============ TOOLS HEAD ============ */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '2fr 1fr',
-        gap: '4rem',
-        alignItems: 'end',
-        marginBottom: '2.5rem',
-        paddingBottom: '1.5rem',
-        borderBottom: '1px solid var(--rule)',
-      }} className="ws-tools-head">
+      {/* ============ INTENT SEARCH HERO ============ */}
+      <section style={{ maxWidth: 1300, margin: '0 auto', padding: '3.5rem 2.5rem 2.5rem', textAlign: 'center' }}>
         <h1 style={{
-          fontFamily: 'var(--font-serif)',
-          fontWeight: 400,
-          fontSize: 'clamp(2.5rem, 5vw, 4.25rem)',
-          lineHeight: 1.0,
-          letterSpacing: '-0.025em',
-          color: 'var(--ink)',
-          fontVariationSettings: '"opsz" 144',
+          fontFamily: 'var(--font-serif)', fontWeight: 400,
+          fontSize: 'clamp(1.9rem, 4.5vw, 3rem)', lineHeight: 1.05,
+          letterSpacing: '-0.02em', color: 'var(--ink)', marginBottom: '0.6rem',
         }}>
-          Tools for your garden that{' '}
-          <em style={{
-            fontStyle: 'italic',
-            fontWeight: 400,
-            color: 'var(--green)',
-            textShadow: '0 0 12px rgba(var(--green-rgb), 0.55), 0 0 28px rgba(var(--green-rgb), 0.3)',
-          }}>work</em>.
+          Whatever you&rsquo;re trying to do out there, there&rsquo;s probably a{' '}
+          <em style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--green)' }}>tool</em> for it.
         </h1>
-        <div style={{
-          fontFamily: 'var(--font-serif)',
-          fontSize: '1rem',
-          lineHeight: 1.55,
-          color: 'var(--ink-soft)',
+        <p style={{
+          fontFamily: 'var(--font-serif)', fontSize: '1rem', lineHeight: 1.55,
+          color: 'var(--ink-soft)', maxWidth: '52ch', margin: '0 auto 2rem',
         }}>
-          <span style={{
-            display: 'inline-block',
-            fontFamily: 'var(--font-sans)',
-            fontSize: '0.7rem',
-            fontWeight: 600,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: 'var(--green)',
-            marginBottom: '0.75rem',
-            padding: '0.25rem 0.5rem',
-            background: 'var(--paper-tint)',
-            borderLeft: '2px solid var(--green)',
-          }}>Tool Shed</span>
-          <p>Calculators and planners I built because I needed them. Real numbers, clear answers, no fluff.</p>
-        </div>
+          Plan it, build it, grow it. Tell me what you&rsquo;re after and I&rsquo;ll point you at the right calculator or write-up.
+        </p>
+        <IntentSearch />
+      </section>
+
+      {/* ============ PLAN / BUILD / GROW SNIPPETS ============ */}
+      <div style={{ maxWidth: 1300, margin: '0 auto', padding: '1.5rem 2.5rem 2rem' }}>
+        {BUCKETS.map((b, bIndex) => {
+          const tools = snippetTools(b.id)
+          return (
+            <section key={b.id} style={{ marginBottom: '4rem', ['--accent']: b.accent } as React.CSSProperties}>
+              <div style={{
+                display: 'flex', alignItems: 'baseline', justifyContent: 'space-between',
+                gap: '1.5rem', flexWrap: 'wrap', marginBottom: '1.5rem',
+                paddingBottom: '1rem', borderBottom: `2px solid ${b.accent}`,
+              }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem', flexWrap: 'wrap' }}>
+                  <a href={`/${b.id}`} style={{ textDecoration: 'none' }}>
+                    <h2 style={{
+                      fontFamily: 'var(--font-display)', fontWeight: 800,
+                      fontSize: 'clamp(2rem, 5vw, 3.25rem)', lineHeight: 0.9,
+                      letterSpacing: '-0.02em', color: 'var(--ink)',
+                    }}><WhimsyWord text={b.word} accent={b.accent} /></h2>
+                  </a>
+                  <span style={{
+                    fontFamily: 'var(--font-serif)', fontStyle: 'italic',
+                    fontSize: '1.1rem', color: b.accent,
+                  }}>{b.tagline}</span>
+                </div>
+                <a href={`/${b.id}`} className="ws-home-more" style={{
+                  fontFamily: 'var(--font-sans)', fontSize: '0.72rem', fontWeight: 600,
+                  letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--ink)',
+                  textDecoration: 'none', whiteSpace: 'nowrap',
+                }}>Enter {b.label} <span className="ws-arrow">→</span></a>
+              </div>
+              <p style={{
+                fontFamily: 'var(--font-serif)', fontSize: '1rem', lineHeight: 1.55,
+                color: 'var(--ink-soft)', maxWidth: '60ch', marginBottom: '1.75rem',
+              }}>{b.blurb}</p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }} className="ws-home-grid">
+                {tools.map((t, tIndex) => <SnippetCard key={t.slug} tool={t} priority={bIndex === 0 && tIndex === 0} />)}
+              </div>
+            </section>
+          )
+        })}
       </div>
 
-      {/* ============ TOOLS GRID ============ */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: '1.5rem',
-      }} className="ws-tools-grid">
-
-        <Link href="/tools/seed-starting" style={toolCardStyle} className="ws-tool-card">
-          <ToolCardImg gradient="timing" photo="/photos/seed-starting.jpg" />
-          <div style={toolCardBody}>
-            <div style={toolNum}>02 · Timing</div>
-            <h3 style={toolCardH3}>Seed Starting Calendar</h3>
-            <p style={toolCardP}>Backed out from your last frost. Honest about the margin.</p>
-          </div>
-        </Link>
-
-        <Link href="/tools/mulch" style={toolCardStyle} className="ws-tool-card">
-          <ToolCardImg gradient="soil" photo="/photos/mulch.jpg" />
-          <div style={toolCardBody}>
-            <div style={toolNum}>03 · Soil</div>
-            <h3 style={toolCardH3}>Mulch Math</h3>
-            <p style={toolCardP}>Cubic yards by bed. Bags versus bulk, settled.</p>
-          </div>
-        </Link>
-
-        <Link href="/tools/square-foot" style={toolCardStyle} className="ws-tool-card">
-          <ToolCardImg gradient="planning" photo="/photos/square-foot.jpg" />
-          <div style={toolCardBody}>
-            <div style={toolNum}>04 · Planning</div>
-            <h3 style={toolCardH3}>Square Foot Planner</h3>
-            <p style={toolCardP}>What fits where, without the spreadsheet headache.</p>
-          </div>
-        </Link>
-
-        <Link href="/tools/compost-ratio" style={toolCardStyle} className="ws-tool-card">
-          <ToolCardImg gradient="compost" photo="/photos/compost.jpg" />
-          <div style={toolCardBody}>
-            <div style={toolNum}>07 · Soil</div>
-            <h3 style={toolCardH3}>Compost Ratio</h3>
-            <p style={toolCardP}>Greens, browns, and how much of each. Worked out for you.</p>
-          </div>
-        </Link>
-
+      {/* ============ GAME CALLOUT ============ */}
+      <div style={{ maxWidth: 1300, margin: '0 auto', padding: '0 2.5rem 4.5rem' }}>
+        <a href={sortGame.href} className="ws-home-game" style={{
+          display: 'flex', flexDirection: 'column', justifyContent: 'center',
+          gap: '0.6rem', padding: '2rem 2.25rem',
+          background: 'var(--paper-tint)', border: '2px solid var(--sunflower)',
+          textDecoration: 'none', color: 'var(--ink)', transition: 'all 0.25s',
+        }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--green)' }}>Featured · Play</span>
+          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.6rem', lineHeight: 1.1 }}>{sortGame.title}</span>
+          <span style={{ fontFamily: 'var(--font-serif)', fontSize: '0.95rem', lineHeight: 1.5, color: 'var(--ink-soft)', maxWidth: '60ch' }}>{sortGame.blurb}</span>
+        </a>
       </div>
-
-      <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-        <Link href="/tools" style={{
-          fontFamily: 'var(--font-sans)',
-          fontSize: '0.78rem',
-          fontWeight: 600,
-          letterSpacing: '0.18em',
-          textTransform: 'uppercase',
-          color: 'var(--ink)',
-          textDecoration: 'none',
-          borderBottom: '2px solid var(--rust)',
-          paddingBottom: '0.25rem',
-        }}>See all tools →</Link>
-      </div>
-
-    </div>
 
       {/* ============ PHOTO BREAK ============ */}
-      <section style={{
-        background: '#0a0907',
-        color: '#f4f1ea',
-        padding: '5rem 2.5rem',
-      }} className="ws-photo-break">
+      <section style={{ background: '#0a0907', color: '#f4f1ea', padding: '5rem 2.5rem' }} className="ws-photo-break">
         <div style={{
-          maxWidth: 1300,
-          margin: '0 auto',
-          display: 'grid',
-          gridTemplateColumns: '1.2fr 1fr',
-          gap: '4rem',
-          alignItems: 'center',
+          maxWidth: 1300, margin: '0 auto', display: 'grid',
+          gridTemplateColumns: '1.2fr 1fr', gap: '4rem', alignItems: 'center',
         }} className="ws-photo-break-inner">
-          <div style={{
-            aspectRatio: '4/5',
-            position: 'relative',
-            overflow: 'hidden',
-            boxShadow: '0 24px 60px rgba(0,0,0,0.5)',
-          }}>
+          <div style={{ aspectRatio: '4/5', position: 'relative', overflow: 'hidden', boxShadow: '0 24px 60px rgba(0,0,0,0.5)' }}>
             <Image src="/photos/sunflower.jpg" alt="Sunflower" fill style={{ objectFit: 'cover' }} />
           </div>
           <div>
-            <div style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '0.7rem',
-              fontWeight: 600,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'var(--rust)',
-              marginBottom: '1.5rem',
-            }}>From the Garden · May</div>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--rust)', marginBottom: '1.5rem' }}>From the Garden · May</div>
             <h2 style={{
-              fontFamily: 'var(--font-serif)',
-              fontWeight: 400,
-              fontSize: 'clamp(1.75rem, 3vw, 2.75rem)',
-              lineHeight: 1.15,
-              letterSpacing: '-0.015em',
-              color: '#f4f1ea',
-              marginBottom: '1.5rem',
-              fontVariationSettings: '"opsz" 144',
+              fontFamily: 'var(--font-serif)', fontWeight: 400, fontSize: 'clamp(1.75rem, 3vw, 2.75rem)',
+              lineHeight: 1.15, letterSpacing: '-0.015em', color: '#f4f1ea', marginBottom: '1.5rem',
             }}>
               The bean trellis <em style={{ fontStyle: 'italic', fontWeight: 300 }}>leans</em>, and so does the gardener.
             </h2>
-            <div style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '0.85rem',
-              letterSpacing: '0.03em',
-              color: 'rgba(244, 241, 234, 0.7)',
-              lineHeight: 1.6,
-            }}>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.85rem', letterSpacing: '0.03em', color: 'rgba(244, 241, 234, 0.7)', lineHeight: 1.6 }}>
               A sunflower that came up where I didn&rsquo;t plant anything. Sometimes the best stuff shows up uninvited.
             </div>
           </div>
         </div>
       </section>
 
-      {/* ============ FIELD NOTES ============ */}
+      {/* ============ FIELD NOTES TEASER ============ */}
       <section style={{ maxWidth: 1300, margin: '0 auto', padding: '5rem 2.5rem' }}>
         <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'baseline',
-          marginBottom: '2.5rem',
-          paddingBottom: '1rem',
-          borderBottom: '1px solid var(--rule)',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
+          marginBottom: '2rem', paddingBottom: '1rem', borderBottom: '1px solid var(--rule)',
         }}>
-          <h2 style={{
-            fontFamily: 'var(--font-serif)',
-            fontWeight: 500,
-            fontSize: '2rem',
-            letterSpacing: '-0.01em',
-            color: 'var(--ink)',
-            fontVariationSettings: '"opsz" 96',
-          }}>From the field notes</h2>
-          <span style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '0.7rem',
-            fontWeight: 500,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: 'var(--ink-muted)',
-          }}>Recent writing</span>
+          <h2 style={{ fontFamily: 'var(--font-serif)', fontWeight: 600, fontSize: '1.75rem', letterSpacing: '-0.01em', color: 'var(--ink)' }}>From the field notes</h2>
+          <a href="/field" className="ws-home-more" style={{ fontFamily: 'var(--font-sans)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--ink)', textDecoration: 'none' }}>All notes <span className="ws-arrow">→</span></a>
         </div>
-
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1.5fr 1fr',
-          gap: '4rem',
-        }} className="ws-notes-grid">
-
-          <div style={{ borderTop: '2px solid var(--ink)', paddingTop: '1.5rem' }}>
-            <span style={{
-              display: 'inline-block',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '0.65rem',
-              fontWeight: 600,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: 'var(--paper)',
-              background: 'var(--green)',
-              padding: '0.3rem 0.6rem',
-              marginBottom: '1rem',
-            }}>Project · In Progress</span>
-            <h4 style={{
-              fontFamily: 'var(--font-serif)',
-              fontWeight: 500,
-              fontSize: '2.25rem',
-              lineHeight: 1.05,
-              color: 'var(--ink)',
-              marginBottom: '1rem',
-              letterSpacing: '-0.015em',
-            }}>The greenhouse build. Patience, scrap lumber, and a storm door</h4>
-            <p style={{
-              fontFamily: 'var(--font-serif)',
-              fontSize: '1.05rem',
-              lineHeight: 1.6,
-              color: 'var(--ink-soft)',
-              maxWidth: '55ch',
-            }}>
-              I&rsquo;m waiting on a few things before I break ground. New back storm door needs to happen first (the old one becomes the greenhouse door). Then I&rsquo;ll pull the salvaged lumber from the kids&rsquo; old playhouse. The plan: crushed rock floor, a workbench, my hammock set up permanently, a potbelly stove for cold mornings, and eventually solar-powered everything. There&rsquo;s a tree to come down and an AC install to finish first. Always something. But here&rsquo;s the full plan and how I&rsquo;m sequencing it.
-            </p>
-            <div style={{
-              marginTop: '1.5rem',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '0.7rem',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: 'var(--ink-muted)',
-            }}>May 12, 2026 · 12 min read</div>
-          </div>
-
-          <div>
-            <div style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '0.7rem',
-              fontWeight: 600,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: 'var(--ink-muted)',
-              paddingBottom: '1rem',
-              borderBottom: '1px solid var(--rule)',
-            }}>More to read</div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <NoteSmall tag="growing" tagLabel="What's Growing" title="Growing zucchini up, not out" excerpt="Vertical zucchini saves space and stops the squash bugs cold. Plus when to cut the bottom leaves." />
-              <NoteSmall tag="watching" tagLabel="Worth Watching" title="Ram pumps, explained simply" excerpt="A short video that finally made these click. Moving water uphill, no electricity. Pinning it here." />
-              <NoteSmall tag="pests" tagLabel="Pest Watch" title="Squash vine borers. The early signs" excerpt="By the time you see the damage, it's usually too late. Here's what to look for in week one." />
-              <NoteSmall tag="reading" tagLabel="Reading" title="Old manuals are gold" excerpt="Pre-internet engineering documents are still some of the clearest writing on basic systems." />
-            </div>
-          </div>
-
-        </div>
+        <a href="/field" className="ws-home-note" style={{ display: 'block', textDecoration: 'none', color: 'inherit', borderTop: '2px solid var(--ink)', paddingTop: '1.5rem', maxWidth: '70ch' }}>
+          <span style={{ display: 'inline-block', fontFamily: 'var(--font-sans)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--paper)', background: 'var(--green)', padding: '0.3rem 0.6rem', marginBottom: '1rem' }}>Project · In Progress</span>
+          <h3 style={{ fontFamily: 'var(--font-serif)', fontWeight: 600, fontSize: 'clamp(1.6rem, 3.5vw, 2.25rem)', lineHeight: 1.1, color: 'var(--ink)', marginBottom: '0.75rem', letterSpacing: '-0.015em' }} className="ws-home-note-h">The greenhouse build. Patience, scrap lumber, and a storm door</h3>
+          <p style={{ fontFamily: 'var(--font-serif)', fontSize: '1.05rem', lineHeight: 1.6, color: 'var(--ink-soft)' }}>
+            Crushed-rock floor, a salvaged storm door, a potbelly stove for cold mornings, and eventually solar-powered everything. Here is the full plan and how I am sequencing it.
+          </p>
+        </a>
       </section>
 
       <style>{`
-        .ws-featured:hover { border-color: var(--green) !important; transform: translateY(-2px); box-shadow: 0 12px 28px var(--shadow); }
-        .ws-tool-card { background: var(--card); text-decoration: none; color: inherit; }
-        .ws-tool-card:hover { border-color: var(--green) !important; transform: translateY(-2px); box-shadow: 0 8px 20px var(--shadow); }
+        .ws-home-card { }
+        .ws-home-card img { transition: transform 0.5s var(--ease-default); }
+        .ws-home-card:hover { border-color: var(--accent, var(--green)) !important; transform: translateY(-2px); box-shadow: 0 8px 20px var(--shadow); }
+        .ws-home-card:hover img { transform: scale(1.045); }
+        .ws-home-more { border-bottom: 2px solid var(--rust); padding-bottom: 0.2rem; }
+        .ws-home-more:hover { color: var(--accent, var(--green)) !important; }
+        .ws-home-note:hover .ws-home-note-h { color: var(--green); }
+        .ws-home-game:hover { transform: translateY(-2px); box-shadow: 0 10px 24px var(--shadow); }
         @media (max-width: 900px) {
-          .ws-tools-head { grid-template-columns: 1fr !important; gap: 1.5rem !important; }
-          .ws-tools-grid { grid-template-columns: 1fr 1fr !important; }
-          .ws-featured { grid-template-columns: 1fr !important; }
+          .ws-home-grid { grid-template-columns: 1fr 1fr !important; }
           .ws-photo-break-inner { grid-template-columns: 1fr !important; gap: 2rem !important; }
-          .ws-notes-grid { grid-template-columns: 1fr !important; gap: 3rem !important; }
         }
+        @media (max-width: 600px) { .ws-home-grid { grid-template-columns: 1fr !important; } }
       `}</style>
     </>
-  )
-}
-
-const toolCardStyle: React.CSSProperties = {
-  background: 'var(--card)',
-  textDecoration: 'none',
-  color: 'inherit',
-  border: '1px solid var(--rule)',
-  transition: 'all 0.25s',
-  overflow: 'hidden',
-  display: 'flex',
-  flexDirection: 'column',
-}
-
-const toolCardBody: React.CSSProperties = {
-  padding: '1.25rem 1.25rem 1.5rem',
-  flex: 1,
-  display: 'flex',
-  flexDirection: 'column',
-}
-
-const toolNum: React.CSSProperties = {
-  fontFamily: 'var(--font-sans)',
-  fontSize: '0.65rem',
-  fontWeight: 500,
-  letterSpacing: '0.15em',
-  textTransform: 'uppercase',
-  color: 'var(--ink-muted)',
-  marginBottom: '0.5rem',
-}
-
-const toolCardH3: React.CSSProperties = {
-  fontFamily: 'var(--font-serif)',
-  fontWeight: 500,
-  fontSize: '1.25rem',
-  lineHeight: 1.15,
-  color: 'var(--ink)',
-  marginBottom: '0.5rem',
-  letterSpacing: '-0.01em',
-}
-
-const toolCardP: React.CSSProperties = {
-  fontFamily: 'var(--font-serif)',
-  fontSize: '0.9rem',
-  lineHeight: 1.5,
-  color: 'var(--ink-soft)',
-}
-
-function NoteSmall({ tag, tagLabel, title, excerpt }: { tag: SmallTagKey; tagLabel: string; title: string; excerpt: string }) {
-  return (
-    <a href="#" style={{
-      textDecoration: 'none',
-      color: 'inherit',
-      display: 'block',
-      padding: '1.5rem 0',
-      borderBottom: '1px solid var(--rule)',
-    }} className="ws-note-small">
-      <div style={{
-        fontFamily: 'var(--font-sans)',
-        fontSize: '0.62rem',
-        fontWeight: 600,
-        letterSpacing: '0.15em',
-        textTransform: 'uppercase',
-        marginBottom: '0.5rem',
-        color: SMALL_TAG_COLORS[tag],
-      }}>{tagLabel}</div>
-      <h5 style={{
-        fontFamily: 'var(--font-serif)',
-        fontWeight: 500,
-        fontSize: '1.15rem',
-        lineHeight: 1.25,
-        color: 'var(--ink)',
-        marginBottom: '0.4rem',
-      }} className="ws-note-small-h">{title}</h5>
-      <p style={{
-        fontFamily: 'var(--font-serif)',
-        fontSize: '0.9rem',
-        lineHeight: 1.5,
-        color: 'var(--ink-soft)',
-      }}>{excerpt}</p>
-      <style>{`.ws-note-small:hover .ws-note-small-h { color: var(--green); }`}</style>
-    </a>
   )
 }

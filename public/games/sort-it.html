@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sort It! · Workshed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<!-- Match whatever theme the main site is set to (shared localStorage on the same origin) -->
+<script>(function(){try{var s=localStorage.getItem('workshed-theme');if(s)document.documentElement.setAttribute('data-theme',s);}catch(e){}})();</script>
+<style>
+  /* ── Workshed design tokens (mirrors the main site) ───────────── */
+  :root {
+    --paper: #f4f1ea;
+    --paper-tint: #ebe7dc;
+    --card: #faf7f0;
+    --ink: #15140f;
+    --ink-soft: #2e2c25;
+    --ink-muted: #807a6c;
+    --rule: #d8d2c2;
+    --rust: #b5470e;
+    --green: #2c5530;
+    --green-rgb: 44, 85, 48;
+    --sunflower: #d99410;
+    --shadow: rgba(20, 18, 12, 0.12);
+    --shadow-deep: rgba(20, 18, 12, 0.18);
+    /* bin accents: green + rust are brand; recycling-blue and landfill-gray
+       are kept muted so they read as real-world bin cues without clashing */
+    --bin-recycling: #4f7a99;
+    --bin-compost:   #2c5530;
+    --bin-landfill:  #6e6a5f;
+    --bin-hazardous: #b5470e;
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-display: 'Archivo', 'Inter', system-ui, sans-serif;
+    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  [data-theme="dark"] {
+    --paper: #1a1814; --paper-tint: #221f1a; --card: #252119;
+    --ink: #f0ebde; --ink-soft: #d4cdb8; --ink-muted: #8a8270; --rule: #3a3528;
+    --rust: #d4622a; --green: #6ba273; --green-rgb: 107, 162, 115; --sunflower: #f4c542;
+    --shadow: rgba(0,0,0,0.4); --shadow-deep: rgba(0,0,0,0.55);
+    --bin-recycling: #6f97b5; --bin-compost: #6ba273; --bin-landfill: #9b9482; --bin-hazardous: #d4622a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+      --paper: #1a1814; --paper-tint: #221f1a; --card: #252119;
+      --ink: #f0ebde; --ink-soft: #d4cdb8; --ink-muted: #8a8270; --rule: #3a3528;
+      --rust: #d4622a; --green: #6ba273; --green-rgb: 107, 162, 115; --sunflower: #f4c542;
+      --shadow: rgba(0,0,0,0.4); --shadow-deep: rgba(0,0,0,0.55);
+      --bin-recycling: #6f97b5; --bin-compost: #6ba273; --bin-landfill: #9b9482; --bin-hazardous: #d4622a;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Layout ───────────────────────────────────────────────────── */
+  .page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 1rem 3rem;
+    min-height: 100vh;
+  }
+
+  /* Back-to-site link */
+  .site-link {
+    align-self: flex-start;
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    text-decoration: none;
+    margin-bottom: 1.25rem;
+    transition: color 0.2s;
+  }
+  .site-link:hover { color: var(--green); }
+  .site-link b { color: var(--ink); font-weight: 800; }
+
+  /* ── Header ───────────────────────────────────────────────────── */
+  header { text-align: center; margin-bottom: 1.25rem; }
+  .brand-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--green);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 7vw, 3.4rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .tagline {
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    margin-top: 0.5rem;
+    max-width: 32ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .accent-dash {
+    width: 64px; height: 4px; border-radius: 2px;
+    background: var(--rust);
+    margin: 0.85rem auto 0;
+    transform-origin: center;
+  }
+
+  /* ── Score bar ────────────────────────────────────────────────── */
+  .score-bar {
+    display: flex;
+    gap: 1.25rem;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 9999px;
+    padding: 0.5rem 1.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin: 1.5rem 0 1rem;
+    font-feature-settings: "tnum" 1;
+  }
+  .score-item { color: var(--ink-muted); display: flex; align-items: center; gap: 0.35rem; }
+  .score-item b { color: var(--ink); font-size: 0.95rem; }
+  .score-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+  /* ── Progress ─────────────────────────────────────────────────── */
+  .progress-wrap {
+    width: min(520px, 95vw);
+    height: 5px;
+    background: var(--rule);
+    border-radius: 9999px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 9999px;
+    transition: width 0.5s var(--ease-default);
+    width: 0%;
+  }
+
+  /* ── Cards (shared) ───────────────────────────────────────────── */
+  .start-card, .end-card, .item-card, .feedback-box {
+    background: var(--card);
+    border: 1px solid var(--rule);
+  }
+
+  /* ── Start screen ─────────────────────────────────────────────── */
+  #start-screen { width: min(480px, 95vw); animation: rise 0.5s var(--ease-default) both; }
+  .start-card { padding: 2.25rem 1.75rem; text-align: center; }
+  .start-icon { font-size: 3.5rem; display: block; margin-bottom: 0.75rem; animation: float 5s ease-in-out infinite; }
+  .start-card h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem; font-weight: 700; color: var(--ink);
+    margin-bottom: 0.75rem; letter-spacing: -0.01em;
+  }
+  .start-card p { font-size: 0.92rem; color: var(--ink-soft); margin-bottom: 0.75rem; }
+  .fine-print { font-size: 0.78rem; color: var(--ink-muted); font-style: italic; }
+
+  .bin-legend {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;
+    margin: 1.25rem 0; text-align: left;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 0.5rem;
+    background: var(--paper-tint); border-radius: 0.5rem;
+    padding: 0.55rem 0.7rem; font-size: 0.78rem; font-weight: 500; color: var(--ink);
+  }
+  .legend-dot { width: 11px; height: 11px; border-radius: 3px; flex-shrink: 0; }
+
+  /* ── Item card ────────────────────────────────────────────────── */
+  #game-area { display: none; flex-direction: column; align-items: center; width: min(520px, 95vw); }
+  .item-card { width: 100%; padding: 1.75rem 1.5rem 1.5rem; text-align: center; margin-bottom: 1.1rem; position: relative; }
+  .round-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--paper-tint); border: 1px solid var(--rule); border-radius: 9999px;
+    padding: 0.15rem 0.9rem; font-size: 0.65rem; font-weight: 600; color: var(--ink-muted);
+    white-space: nowrap; text-transform: uppercase; letter-spacing: 0.12em;
+  }
+  .item-emoji { font-size: clamp(4rem, 14vw, 5.5rem); display: block; line-height: 1.1; margin-bottom: 0.5rem; animation: float 4s ease-in-out infinite; }
+  .item-name { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+  .item-prompt { font-size: 0.78rem; color: var(--ink-muted); font-weight: 500; letter-spacing: 0.04em; }
+  /* streak flourish */
+  .streak-flag {
+    display: inline-block; margin-top: 0.6rem;
+    font-size: 0.66rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--sunflower); opacity: 0;
+  }
+  .streak-flag.show { opacity: 1; animation: pop 0.4s var(--ease-bounce); }
+
+  /* ── Bins ─────────────────────────────────────────────────────── */
+  .bins-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; width: 100%; margin-bottom: 1.1rem; }
+  .bin-btn {
+    display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+    padding: 1rem 0.7rem; background: var(--card);
+    border: 2px solid var(--rule);
+    border-radius: 0.75rem; cursor: pointer; color: var(--ink); position: relative;
+    transition: transform 0.2s var(--ease-default), border-color 0.2s, box-shadow 0.2s;
+  }
+  .bin-btn.recycling { --bin-color: var(--bin-recycling); }
+  .bin-btn.compost   { --bin-color: var(--bin-compost); }
+  .bin-btn.landfill  { --bin-color: var(--bin-landfill); }
+  .bin-btn.hazardous { --bin-color: var(--bin-hazardous); }
+  /* Colored frames stay hidden until an answer is locked in, so every option
+     looks identical while you are deciding. */
+  .bins-grid.revealed .bin-btn { border-color: var(--bin-color); }
+  .bin-btn:hover:not(:disabled) { transform: translateY(-3px); border-color: var(--ink-muted); box-shadow: 0 10px 22px var(--shadow); }
+  .bin-btn:active:not(:disabled) { transform: translateY(-1px); }
+  .bin-btn:disabled { cursor: default; opacity: 0.5; }
+  .bin-icon { font-size: 1.7rem; }
+  .bin-title { font-family: var(--font-display); font-size: 0.9rem; font-weight: 700; color: var(--bin-color); }
+  .bin-sub { font-size: 0.68rem; color: var(--ink-muted); font-weight: 500; text-align: center; }
+
+  .bin-btn.correct-glow {
+    border-color: var(--green) !important;
+    box-shadow: 0 0 0 2px rgba(var(--green-rgb), 0.4), 0 10px 24px var(--shadow) !important;
+    transform: none !important;
+  }
+  .bin-btn.wrong-flash { border-color: var(--rust) !important; transform: none !important; }
+  .bin-btn.bounce { animation: bin-bounce 0.5s var(--ease-bounce); }
+
+  /* ── Feedback ─────────────────────────────────────────────────── */
+  .feedback-box { width: 100%; padding: 1.25rem 1.35rem; margin-bottom: 1rem; display: none; border-radius: 0.75rem; animation: pop 0.35s var(--ease-bounce); }
+  .feedback-box.correct-fb { border: 2px solid var(--green); }
+  .feedback-box.wrong-fb { border: 2px solid var(--rust); }
+  .feedback-header { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 0.45rem; display: flex; align-items: center; gap: 0.5rem; }
+  .feedback-header .verdict-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .feedback-body { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.6; }
+
+  /* ── Buttons ──────────────────────────────────────────────────── */
+  .cta-btn, .start-btn {
+    font-family: var(--font-sans); font-weight: 600; cursor: pointer;
+    border: none; border-radius: 0.6rem; transition: transform 0.2s var(--ease-bounce), box-shadow 0.2s;
+  }
+  .start-btn { background: var(--green); color: var(--paper); padding: 0.85rem 2rem; font-size: 1rem; width: 100%; margin-top: 0.5rem; }
+  .start-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 22px var(--shadow); }
+  .start-btn:active { transform: translateY(0); }
+  .cta-btn {
+    display: none; background: none; color: var(--ink);
+    border: 2px solid var(--ink); padding: 0.7rem 2rem; font-size: 0.78rem;
+    font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .cta-btn:hover { background: var(--ink); color: var(--paper); }
+  .cta-btn .arrow { display: inline-block; transition: transform 0.2s var(--ease-bounce); }
+  .cta-btn:hover .arrow { transform: translateX(4px); }
+
+  /* ── End screen ───────────────────────────────────────────────── */
+  #end-screen { display: none; flex-direction: column; align-items: center; text-align: center; width: min(440px, 95vw); }
+  .end-card { padding: 2.25rem 1.75rem; width: 100%; animation: pop 0.4s var(--ease-bounce); }
+  .end-trophy { font-size: 3.25rem; display: block; margin-bottom: 0.5rem; }
+  .end-card h2 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; color: var(--ink); }
+  .end-score { font-family: var(--font-display); font-size: 2.75rem; font-weight: 800; color: var(--green); line-height: 1; margin: 0.4rem 0; }
+  .end-msg { font-size: 0.92rem; color: var(--ink-soft); margin: 0.6rem 0 1.25rem; }
+
+  /* floating sprout on a correct answer */
+  .sprout {
+    position: fixed; pointer-events: none; font-size: 1.5rem; z-index: 50;
+    animation: sprout-up 0.9s var(--ease-default) forwards;
+  }
+
+  /* ── Keyframes ────────────────────────────────────────────────── */
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+  @keyframes bin-bounce { 0%,100% { transform: translateY(0); } 35% { transform: translateY(-8px); } 70% { transform: translateY(-2px); } }
+  @keyframes emoji-cheer { 0% { transform: scale(1) rotate(0); } 40% { transform: scale(1.25) rotate(-8deg); } 70% { transform: scale(1.1) rotate(6deg); } 100% { transform: scale(1) rotate(0); } }
+  @keyframes sprout-up { from { opacity: 1; transform: translateY(0) scale(0.8); } to { opacity: 0; transform: translateY(-70px) scale(1.2); } }
+  .item-emoji.cheer { animation: emoji-cheer 0.6s var(--ease-bounce); }
+
+  @media (max-width: 480px) {
+    .bin-icon { font-size: 1.45rem; }
+    .bin-title { font-size: 0.8rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <a class="site-link" href="/">← <b>Workshed</b></a>
+
+  <header>
+    <span class="brand-badge">A Workshed Game</span>
+    <h1>Sort It!</h1>
+    <p class="tagline">Four bins. One piece of trash at a time. Find out how much you actually know.</p>
+    <div class="accent-dash"></div>
+  </header>
+
+  <div class="score-bar">
+    <span class="score-item"><span class="score-dot" style="background:var(--green)"></span> Right <b id="correct-count">0</b></span>
+    <span class="score-item"><span class="score-dot" style="background:var(--rust)"></span> Wrong <b id="wrong-count">0</b></span>
+    <span class="score-item">Item <b id="round-num">—</b> / 10</span>
+  </div>
+
+  <div class="progress-wrap"><div class="progress-fill" id="progress-fill"></div></div>
+
+  <!-- ── START SCREEN ─────────────────────── -->
+  <div id="start-screen">
+    <div class="start-card">
+      <span class="start-icon">🗑️</span>
+      <h2>Where does it go?</h2>
+      <p>Most of us guess at this and get it wrong more than we would like. Here is a pile of everyday stuff. Put each piece in the right bin and I will tell you why it goes there.</p>
+      <div class="bin-legend">
+        <div class="legend-item"><span class="legend-dot" style="background:var(--bin-recycling)"></span>Recycling</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--bin-compost)"></span>Compost</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--bin-landfill)"></span>Landfill</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--bin-hazardous)"></span>Hazardous</div>
+      </div>
+      <p class="fine-print">Ten items a round. Rules vary by town, so when something here surprises you, check your local guidelines before you trust me over them.</p>
+      <button class="start-btn" onclick="startGame()">Start sorting</button>
+    </div>
+  </div>
+
+  <!-- ── GAME AREA ──────────────────────────── -->
+  <div id="game-area">
+    <div class="item-card" id="item-card">
+      <div class="round-badge" id="round-badge">Item 1 of 10</div>
+      <span class="item-emoji" id="item-emoji">🍌</span>
+      <div class="item-name" id="item-name">—</div>
+      <div class="item-prompt">Which bin?</div>
+      <span class="streak-flag" id="streak-flag">On a roll</span>
+    </div>
+
+    <div class="bins-grid" id="bins-grid">
+      <button class="bin-btn recycling" id="bin-recycling" onclick="checkAnswer('recycling')">
+        <span class="bin-icon">♻️</span><span class="bin-title">Recycling</span><span class="bin-sub">Paper, glass, metal, rigid plastic</span>
+      </button>
+      <button class="bin-btn compost" id="bin-compost" onclick="checkAnswer('compost')">
+        <span class="bin-icon">🌱</span><span class="bin-title">Compost</span><span class="bin-sub">Food scraps and yard waste</span>
+      </button>
+      <button class="bin-btn landfill" id="bin-landfill" onclick="checkAnswer('landfill')">
+        <span class="bin-icon">🗑️</span><span class="bin-title">Landfill</span><span class="bin-sub">Mixed materials, the rest</span>
+      </button>
+      <button class="bin-btn hazardous" id="bin-hazardous" onclick="checkAnswer('hazardous')">
+        <span class="bin-icon">⚠️</span><span class="bin-title">Hazardous</span><span class="bin-sub">Batteries, e-waste, chemicals</span>
+      </button>
+    </div>
+
+    <div class="feedback-box" id="feedback-box">
+      <div class="feedback-header" id="feedback-header"></div>
+      <div class="feedback-body" id="feedback-body"></div>
+    </div>
+
+    <button class="cta-btn" id="next-btn" onclick="nextRound()">Next item <span class="arrow">→</span></button>
+  </div>
+
+  <!-- ── END SCREEN ────────────────────────── -->
+  <div id="end-screen">
+    <div class="end-card">
+      <span class="end-trophy" id="end-trophy">🌻</span>
+      <h2>That is the pile.</h2>
+      <div class="end-score" id="end-score">0 / 10</div>
+      <p class="end-msg" id="end-msg"></p>
+      <button class="start-btn" onclick="restartGame()">Sort another round</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ── Items. Every emoji is the thing it names. ──────────────────── */
+const ITEMS = [
+  // ── Compost ───────────────────────────────────────────────────
+  { emoji:"🍌", name:"Banana peel",        bin:"compost",   why:"Peels rot fast and feed the pile with potassium. Straight into the compost." },
+  { emoji:"🥚", name:"Eggshells",          bin:"compost",   why:"Crushed shells add calcium and break up dense compost. Rinse them so they do not draw pests." },
+  { emoji:"☕", name:"Coffee grounds",     bin:"compost",   why:"Grounds are a nitrogen-rich green even though they look brown. Worms go straight for them." },
+  { emoji:"🍎", name:"Apple core",         bin:"compost",   why:"Any raw fruit scrap composts. Bury it under the dry stuff so it does not attract flies." },
+  { emoji:"🥕", name:"Carrot tops",        bin:"compost",   why:"Vegetable trimmings are classic green material. Chop them small and they break down quicker." },
+  { emoji:"🍂", name:"Dead leaves",        bin:"compost",   why:"Dry leaves are the brown that balances all your kitchen scraps. Stockpile a bag of them in fall." },
+  { emoji:"🌽", name:"Corn husks",         bin:"compost",   why:"Husks compost well but slowly. Tear them into strips and they go faster." },
+  { emoji:"🍞", name:"Stale bread",        bin:"compost",   why:"Bread composts in small amounts. Too much invites rodents, so bury it deep in the middle." },
+  { emoji:"🥬", name:"Lettuce trimmings",  bin:"compost",   why:"Soft greens rot quickly and add moisture. Mix in browns so the pile does not turn to slime." },
+
+  // ── Recycling ─────────────────────────────────────────────────
+  { emoji:"📰", name:"Newspaper",          bin:"recycling", why:"Clean newsprint recycles easily. It also works as a brown layer in compost if you shred it." },
+  { emoji:"📦", name:"Cardboard box",      bin:"recycling", why:"Flatten it first so it does not hog space in your bin or the truck. Tape is fine to leave on." },
+  { emoji:"🥫", name:"Aluminum can",       bin:"recycling", why:"Aluminum recycles forever with almost no loss in quality. A quick rinse is all it needs." },
+  { emoji:"🍾", name:"Glass bottle",       bin:"recycling", why:"Glass is endlessly recyclable. Empty it, give it a rinse, and you are done." },
+  { emoji:"🧴", name:"Shampoo bottle",     bin:"recycling", why:"Rigid plastic bottles recycle in most programs. This is the one people throw away by mistake." },
+  { emoji:"📄", name:"Office paper",       bin:"recycling", why:"Printer and notebook paper recycles fine. The staples are small enough to leave in." },
+  { emoji:"🫙", name:"Glass jar",          bin:"recycling", why:"Clean jars recycle, or keep them. A good jar is too useful to throw out." },
+  { emoji:"🪣", name:"Plastic bucket",     bin:"recycling", why:"Rigid plastic buckets recycle in many programs. Check the little number stamped on the bottom." },
+  { emoji:"🗞️", name:"Junk mail",          bin:"recycling", why:"Flyers and junk mail recycle with the rest of your paper. Pull out any plastic windows first." },
+
+  // ── Landfill ──────────────────────────────────────────────────
+  { emoji:"🪥", name:"Old toothbrush",     bin:"landfill",  why:"Plastic and nylon fused together, too small to sort. No recycler wants it. Trash." },
+  { emoji:"🧽", name:"Kitchen sponge",     bin:"landfill",  why:"Synthetic sponges are plastic foam that traps food residue. They go in the trash." },
+  { emoji:"👟", name:"Worn-out sneaker",   bin:"landfill",  why:"Glued layers of foam, rubber, and fabric. A few brands take them back, otherwise it is landfill." },
+  { emoji:"🩹", name:"Used bandage",       bin:"landfill",  why:"Anything with blood on it is trash, for hygiene reasons. Never put it in recycling." },
+  { emoji:"🥤", name:"Cup with a straw",   bin:"landfill",  why:"A waxed cup, a lid, and a straw are three materials in one. Most programs send the whole thing to landfill." },
+  { emoji:"🪒", name:"Disposable razor",   bin:"landfill",  why:"Plastic handle, metal blade, fused for good. Razors are landfill unless your brand mails them back." },
+  { emoji:"🩴", name:"Worn-out flip-flop", bin:"landfill",  why:"Foam rubber with no recycling stream to speak of. Trash, unfortunately." },
+  { emoji:"🎈", name:"Popped balloon",     bin:"landfill",  why:"Latex and mylar do not recycle, and loose balloons are rough on wildlife. Bag it as trash." },
+  { emoji:"💄", name:"Lipstick tube",      bin:"landfill",  why:"Tiny mixed-material containers slip right through sorting machines. Landfill unless the brand refills them." },
+
+  // ── Hazardous / e-waste ───────────────────────────────────────
+  { emoji:"🔋", name:"Battery",            bin:"hazardous", why:"Batteries leak and can spark fires in a packed truck. They need a hazardous drop-off, never the curb." },
+  { emoji:"💡", name:"Light bulb",         bin:"hazardous", why:"CFL bulbs hold a trace of mercury and need special handling. LEDs go to e-waste too." },
+  { emoji:"📱", name:"Old phone",          bin:"hazardous", why:"Phones hold valuable metals and a battery that should never reach a landfill. Take them to e-waste." },
+  { emoji:"🖥️", name:"Old monitor",        bin:"hazardous", why:"Screens contain heavy metals. Most areas run a free electronics recycling day a few times a year." },
+  { emoji:"🎮", name:"Game controller",    bin:"hazardous", why:"Anything with a circuit board is e-waste. It does not belong in the recycling bin." },
+  { emoji:"💊", name:"Expired medication", bin:"hazardous", why:"Old pills do not belong in the trash or down the toilet. Use a pharmacy take-back box." },
+  { emoji:"🧯", name:"Fire extinguisher",  bin:"hazardous", why:"Pressurized and full of chemicals. Your fire department or hazardous-waste site will take it." },
+  { emoji:"🔌", name:"Phone charger",      bin:"hazardous", why:"Chargers and cables are e-waste. A drawer of tangled cords adds up. Drop them at electronics recycling." },
+];
+
+const BINS = {
+  recycling: { label:"Recycling bin", verb:"recycles" },
+  compost:   { label:"Compost",       verb:"composts" },
+  landfill:  { label:"Landfill",      verb:"goes to landfill" },
+  hazardous: { label:"Hazardous drop-off", verb:"is hazardous waste" },
+};
+const ROUND_SIZE = 10;
+
+/* ── State ──────────────────────────────────────────────────────── */
+let deck = [], idx = 0, correct = 0, wrong = 0, streak = 0, answered = false;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function $(id) { return document.getElementById(id); }
+function show(el, mode) { $(el).style.display = mode || 'block'; }
+function hide(el) { $(el).style.display = 'none'; }
+
+/* ── Game flow ──────────────────────────────────────────────────── */
+function startGame() {
+  deck = shuffle(ITEMS).slice(0, ROUND_SIZE);
+  idx = 0; correct = 0; wrong = 0; streak = 0; answered = false;
+  updateScore();
+  $('progress-fill').style.width = '0%';
+  hide('start-screen'); hide('end-screen');
+  $('game-area').style.display = 'flex';
+  loadItem();
+}
+
+function loadItem() {
+  answered = false;
+  const item = deck[idx];
+  $('item-emoji').textContent = item.emoji;
+  $('item-name').textContent = item.name;
+  $('round-badge').textContent = `Item ${idx + 1} of ${ROUND_SIZE}`;
+  $('round-num').textContent = idx + 1;
+  $('progress-fill').style.width = (idx / ROUND_SIZE * 100) + '%';
+
+  const card = $('item-card');
+  card.style.animation = 'none'; void card.offsetHeight; card.style.animation = 'rise 0.4s var(--ease-default)';
+
+  $('bins-grid').classList.remove('revealed');
+  document.querySelectorAll('.bin-btn').forEach(b => {
+    b.disabled = false;
+    b.classList.remove('correct-glow', 'wrong-flash', 'bounce');
+  });
+  $('streak-flag').classList.remove('show');
+  hide('feedback-box'); hide('next-btn');
+}
+
+function checkAnswer(chosen) {
+  if (answered) return;
+  answered = true;
+  const item = deck[idx];
+  const right = chosen === item.bin;
+
+  if (right) { correct++; streak++; } else { wrong = wrong + 1; streak = 0; }
+  updateScore();
+
+  document.querySelectorAll('.bin-btn').forEach(b => b.disabled = true);
+  $('bins-grid').classList.add('revealed');
+  const correctBtn = $('bin-' + item.bin);
+  correctBtn.classList.add('correct-glow');
+
+  if (right) {
+    correctBtn.classList.add('bounce');
+    $('item-emoji').classList.add('cheer');
+    setTimeout(() => $('item-emoji').classList.remove('cheer'), 650);
+    sprout(correctBtn);
+    if (streak >= 3) {
+      const flag = $('streak-flag');
+      flag.textContent = streak >= 5 ? `${streak} in a row` : 'On a roll';
+      flag.classList.add('show');
+    }
+  } else {
+    const wrongBtn = $('bin-' + chosen);
+    wrongBtn.classList.add('wrong-flash', 'bounce');
+  }
+
+  const fb = $('feedback-box');
+  fb.className = 'feedback-box ' + (right ? 'correct-fb' : 'wrong-fb');
+  show('feedback-box');
+  $('feedback-header').innerHTML =
+    `<span class="verdict-dot" style="background:${right ? 'var(--green)' : 'var(--rust)'}"></span>` +
+    (right ? `Right. That ${BINS[item.bin].verb}.` : `Not quite. It ${BINS[item.bin].verb}.`);
+  $('feedback-body').textContent = item.why;
+
+  $('next-btn').textContent = idx + 1 >= ROUND_SIZE ? 'See how you did' : 'Next item';
+  if (idx + 1 < ROUND_SIZE) $('next-btn').innerHTML = 'Next item <span class="arrow">→</span>';
+  $('next-btn').style.display = 'inline-block';
+}
+
+function sprout(btn) {
+  const r = btn.getBoundingClientRect();
+  const s = document.createElement('div');
+  s.className = 'sprout';
+  s.textContent = '🌱';
+  s.style.left = (r.left + r.width / 2 - 12) + 'px';
+  s.style.top = (r.top + 8) + 'px';
+  document.body.appendChild(s);
+  setTimeout(() => s.remove(), 950);
+}
+
+function nextRound() {
+  idx++;
+  if (idx >= ROUND_SIZE) showEnd(); else loadItem();
+}
+
+function showEnd() {
+  hide('game-area');
+  $('progress-fill').style.width = '100%';
+  const pct = correct / ROUND_SIZE;
+  let trophy, msg;
+  if (pct === 1)        { trophy = "🌻"; msg = "A clean sweep. You clearly read the bin lids."; }
+  else if (pct >= 0.8)  { trophy = "🌿"; msg = "Strong round. You know your way around a waste stream."; }
+  else if (pct >= 0.6)  { trophy = "🌱"; msg = "Solid. A couple more rounds and the tricky ones will stick."; }
+  else if (pct >= 0.4)  { trophy = "🪱"; msg = "A rough start, and honestly the bins are confusing on purpose."; }
+  else                  { trophy = "🍂"; msg = "We have all been there. That is the whole reason this exists. Go again."; }
+  $('end-trophy').textContent = trophy;
+  $('end-score').textContent = `${correct} / ${ROUND_SIZE}`;
+  $('end-msg').textContent = msg;
+  $('end-screen').style.display = 'flex';
+}
+
+function updateScore() {
+  $('correct-count').textContent = correct;
+  $('wrong-count').textContent = wrong;
+}
+function restartGame() { hide('end-screen'); startGame(); }
+</script>
+</body>
+</html>

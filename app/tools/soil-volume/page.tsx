@@ -65,8 +65,8 @@ export default function SoilVolumePage() {
 
       {/* Pull quote */}
       <blockquote style={{
-        borderLeft: '3px solid var(--green)',
-        paddingLeft: '1.25rem',
+        border: '2px solid var(--green)',
+        padding: '1.25rem 1.5rem',
         margin: '2rem 0 3rem',
         fontFamily: 'var(--font-serif)',
         fontStyle: 'italic',
@@ -132,8 +132,10 @@ export default function SoilVolumePage() {
         </Section>
 
         <Figure
+          src="/photos/soil.jpg"
+          alt="Dark soil at the edge of a raised bed"
           gradient="soil"
-          caption="The bulk delivery arrives in your driveway and waits, patient and inert, until you move it."
+          caption="Good bed soil a season in. Dark, alive, and already growing things I never planted."
         />
 
         <Section title="Coffee grounds and the nitrogen question">

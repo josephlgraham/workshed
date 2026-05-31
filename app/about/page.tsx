@@ -44,30 +44,45 @@ export default function AboutPage() {
         gap: '1.25rem',
       }}>
         <p>
-          Workshed is a gardening site built around calculators that do the
-          math, field notes from a working garden, and a garden page that shows
-          what is happening right now.
+          Workshed is a gardening site organized around the three things you
+          actually do out there: <a href="/plan" style={linkStyle}>Plan</a> what
+          goes where, <a href="/build" style={linkStyle}>Build</a> the beds and
+          water systems, and <a href="/grow" style={linkStyle}>Grow</a> what you
+          put in the ground. Each section holds the calculators that fit it
+          alongside the writing that goes with them.
         </p>
 
         <p>
-          The Tool Shed started because the same math kept coming up by hand. How much soil fills a raised bed, when to start seeds relative to
-          last frost, how much mulch a set of beds actually needs. The
-          calculators are the ones I wanted to find and could not, so I built
-          them. They are free, there are no ads in the way of the answers, and
-          the math behind them is explained if you want to understand what is
-          happening rather than just take the number.
+          The calculators started because the same math kept coming up by hand.
+          How much soil fills a raised bed, when to start seeds relative to last
+          frost, how much mulch a set of beds actually needs. They are the ones I
+          wanted to find and could not, so I built them. They are free, there are
+          no ads in the way of the answers, and the math behind them is explained
+          if you want to understand what is happening rather than just take the
+          number.
         </p>
 
         <p>
-          Field Notes is the slower part of the site. Longer writing about what
-          is working, what is not, and what the garden has taught through
-          failure and repetition. The garden is real and working, and the notes
-          are written close to when things happen.
+          <a href="/field" style={linkStyle}>Field Notes</a> is the slower part
+          of the site. Longer writing about what is working, what is not, and
+          what the garden has taught through failure and repetition. The garden
+          is real and working, and the notes are written close to when things
+          happen.
         </p>
 
         <p>
-          The Garden page shows current conditions and what is going on in the
-          beds. It is updated as the season moves.
+          <a href="/gear" style={linkStyle}>Gear</a> is the tools and supplies I
+          actually reach for, listed with the reason I use them. It is still
+          coming together. Nothing lands there because someone paid for the slot,
+          and if a thing broke or disappointed me I will say so.
+        </p>
+
+        <p>
+          There is a <a href="/garden" style={linkStyle}>garden page</a> with
+          current conditions and what is going on in the beds, updated as the
+          season moves, and a recycling game called{' '}
+          <a href="/games/sort-it.html" style={linkStyle}>Sort It!</a> when you want a break
+          from the math.
         </p>
 
         <p>

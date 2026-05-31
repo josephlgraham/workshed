@@ -1,8 +1,15 @@
 import Image from 'next/image'
-import type { Tool } from '@/lib/types'
+import type { Tool, Bucket } from '@/lib/types'
 import { getFeaturedTool, getToolsByStatus } from '@/lib/garden'
 
 export const metadata = { title: 'Tools · Workshed' }
+
+/* Each tool hovers to its own bucket's accent, for cross-site consistency. */
+const BUCKET_ACCENT: Record<Bucket, string> = {
+  plan: 'var(--sunflower)',
+  build: 'var(--rust)',
+  grow: 'var(--green)',
+}
 
 /* ── Gradient palette matching index.html ─────────────────────────────── */
 const GRADIENTS: Record<string, string> = {
@@ -68,11 +75,7 @@ function ToolCard({ tool, dimmed = false }: { tool: Tool; dimmed?: boolean }) {
     <>
       <CardImg tool={tool} />
       <div style={{ padding: '1.25rem 1.25rem 1.5rem', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-          <span style={{
-            fontFamily: 'var(--font-sans)', fontSize: '0.65rem', fontWeight: 500,
-            letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--ink-muted)',
-          }}>{tool.num}</span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginBottom: '0.25rem' }}>
           <span style={{
             fontFamily: 'var(--font-sans)', fontSize: '0.62rem', fontWeight: 600,
             letterSpacing: '0.12em', textTransform: 'uppercase',
@@ -92,12 +95,13 @@ function ToolCard({ tool, dimmed = false }: { tool: Tool; dimmed?: boolean }) {
     </>
   )
 
-  const cardStyle: React.CSSProperties = {
+  const cardStyle = {
     background: 'var(--card)', textDecoration: 'none', color: 'var(--ink)',
     border: '1px solid var(--rule)', transition: 'all 0.25s', overflow: 'hidden',
     display: 'flex', flexDirection: 'column', opacity: dimmed ? 0.55 : 1,
     cursor: isLinked ? 'pointer' : 'default',
-  }
+    ['--accent']: BUCKET_ACCENT[tool.bucket],
+  } as React.CSSProperties
 
   if (isLinked) {
     return <a href={tool.href} style={cardStyle} className="ws-tool-card-live">{inner}</a>
@@ -122,7 +126,8 @@ export default function ToolsPage() {
             display: 'grid', gridTemplateColumns: '1.3fr 1fr',
             background: 'var(--card)', textDecoration: 'none', color: 'var(--ink)',
             border: '1px solid var(--rule)', transition: 'all 0.25s', overflow: 'hidden',
-          }} className="ws-featured">
+            ['--accent']: BUCKET_ACCENT[featured.bucket],
+          } as React.CSSProperties} className="ws-featured">
             <CardImg tool={featured} minHeight={320} />
             <div style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '1rem' }}>
               <span style={{
@@ -201,8 +206,8 @@ export default function ToolsPage() {
       </section>
 
       <style>{`
-        .ws-tool-card-live:hover { border-color: var(--green) !important; transform: translateY(-2px); box-shadow: 0 8px 20px var(--shadow); }
-        .ws-featured:hover { border-color: var(--green) !important; transform: translateY(-2px); box-shadow: 0 12px 28px var(--shadow); }
+        .ws-tool-card-live:hover { border-color: var(--accent, var(--green)) !important; transform: translateY(-2px); box-shadow: 0 8px 20px var(--shadow); }
+        .ws-featured:hover { border-color: var(--accent, var(--green)) !important; transform: translateY(-2px); box-shadow: 0 12px 28px var(--shadow); }
         @media (max-width: 900px) {
           .ws-tools-head { grid-template-columns: 1fr !important; gap: 1.5rem !important; }
           .ws-tools-grid { grid-template-columns: 1fr 1fr !important; }

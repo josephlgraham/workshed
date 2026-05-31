@@ -62,8 +62,8 @@ export default function RainwaterPage() {
 
       {/* Pull quote */}
       <blockquote style={{
-        borderLeft: '3px solid var(--green)',
-        paddingLeft: '1.25rem',
+        border: '2px solid var(--green)',
+        padding: '1.25rem 1.5rem',
         margin: '0 0 3rem',
         fontFamily: 'var(--font-serif)',
         fontStyle: 'italic',
@@ -111,6 +111,25 @@ export default function RainwaterPage() {
           </p>
         </Section>
 
+        <figure style={{ margin: '2.5rem -70px 2.5rem', maxWidth: 820 }} className="ws-figure">
+          <div style={{
+            aspectRatio: '4/3',
+            background: 'center/cover no-repeat url(/photos/rain_barrel_wideshot.jpg)',
+            border: '1px solid var(--rule)',
+          }} role="img" aria-label="A rain barrel set up under a downspout" />
+          <figcaption style={{
+            marginTop: '0.625rem',
+            fontFamily: 'var(--font-serif)',
+            fontStyle: 'italic',
+            fontSize: '0.85rem',
+            lineHeight: 1.5,
+            color: 'var(--ink-muted)',
+          }}>
+            The whole setup, downspout to barrel. Nothing clever, just gravity and somewhere to put the water.
+          </figcaption>
+          <style>{`@media (max-width: 760px) { .ws-figure { margin-left: 0 !important; margin-right: 0 !important; } }`}</style>
+        </figure>
+
         <Section title="Height, pressure, and the hose problem">
           <p>
             Rain barrels are gravity-fed. Every foot of elevation above the spigot
@@ -136,14 +155,27 @@ export default function RainwaterPage() {
         </Section>
 
         <Section title="The other essentials">
-          <ul style={ulStyle}>
-            <li><strong>Mosquito screen.</strong> Fine mesh at every opening (inlet, overflow, lid). Hardware cloth is too coarse. Window screen is the standard.</li>
-            <li><strong>Overflow routing.</strong> Route it away from the foundation. A hose to a spot in the yard that won't mind being wet is the move.</li>
-            <li><strong>First-flush diverter.</strong> Optional but worth it if you're watering edibles. Routes the initial dirty runoff away before filling the barrel.</li>
-            <li><strong>Daisy-chaining.</strong> Link a second barrel with a short hose between matching bulkhead fittings. They equalize. More capacity without raising anything.</li>
-            <li><strong>Winter.</strong> In any climate that freezes: drain it, disconnect the downspout, leave the spigot open, flip or cover. A sealed full barrel cracks.</li>
-            <li><strong>Drinking water.</strong> Don't. Roof runoff is not potable without serious filtration. Fine for the garden, not for people.</li>
-          </ul>
+          <p>
+            Fine mesh at every opening — inlet, overflow, lid. Hardware cloth is
+            too coarse. Window screen is the standard. Skipping this turns the
+            barrel into a mosquito nursery within a week.
+          </p>
+          <p>
+            Route the overflow away from the foundation, to a spot that won't
+            mind being wet. A daisy-chain to a second barrel is better: connect
+            them with a short hose between matching bulkhead fittings and they
+            equalize automatically. More storage without raising anything.
+          </p>
+          <p>
+            If you're watering edibles, a first-flush diverter is worth the
+            trouble. The first water off a roof after a dry spell carries the
+            most contaminants; the diverter routes that initial runoff away
+            before the barrel starts filling. And in any climate that freezes:
+            drain it before winter, disconnect the downspout, leave the spigot
+            open, flip or cover the barrel. A sealed full barrel cracks. Roof
+            runoff is not potable without serious filtration — fine for the
+            garden, not for people.
+          </p>
         </Section>
 
         <Section title="When the calculator is most useful">

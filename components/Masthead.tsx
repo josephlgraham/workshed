@@ -3,11 +3,21 @@ import { getActiveTheme } from '@/lib/seasons'
 import ThemeToggle from '@/components/ThemeToggle'
 import LiveSeasonLabel from '@/components/LiveSeasonLabel'
 
-const NAV_LINKS = [
-  { href: '/',       label: 'Home'        },
-  { href: '/garden', label: 'Garden'      },
-  { href: '/tools',  label: 'Tools'       },
-  { href: '/field',  label: 'Field Notes' },
+const NAV_LINKS: { href: string; label: string; accent?: string }[] = [
+  { href: '/',      label: 'Home'        },
+  { href: '/plan',  label: 'Plan',  accent: 'var(--sunflower)' },
+  { href: '/build', label: 'Build', accent: 'var(--rust)'      },
+  { href: '/grow',  label: 'Grow',  accent: 'var(--green)'     },
+  { href: '/field', label: 'Field Notes' },
+  { href: '/gear',  label: 'Gear'        },
+]
+
+// Words the masthead intro cycles through before settling on WORKSHED.
+// Tinted to their bucket accents so the animation previews the site's spine.
+const INTRO_WORDS: { word: string; color: string }[] = [
+  { word: 'PLAN',  color: 'var(--sunflower)' },
+  { word: 'BUILD', color: 'var(--rust)' },
+  { word: 'GROW',  color: 'var(--green)' },
 ]
 
 function getFormattedDate(): string {
@@ -48,23 +58,34 @@ export default function Masthead() {
       {/* Wordmark */}
       <div style={{ textAlign: 'center', padding: '1.75rem 2.5rem 0' }}>
         <Link href="/" style={{ textDecoration: 'none' }} aria-label="Workshed home">
-          <div className="ws-wordmark" aria-hidden="true" style={{
-            fontFamily: 'var(--font-display)',
-            fontWeight: 800,
-            fontSize: 'clamp(3.25rem, 9.5vw, 6.5rem)',
-            lineHeight: 0.85,
-            color: 'var(--ink)',
-            display: 'inline-block',
-          }}>
-            {'WORKSHED'.split('').map((ch, i) => (
-              <span
-                key={i}
-                className={`ws-letter ws-letter-${i + 1}`}
-                style={{ display: 'inline-block', letterSpacing: i < 7 ? '-0.035em' : '0' }}
-              >
-                {ch}
-              </span>
-            ))}
+          <div className="ws-wordmark-wrap" style={{ position: 'relative', display: 'inline-block' }}>
+            {/* Intro overlay: PLAN → BUILD → GROW, cycling in before WORKSHED lands.
+                Purely decorative; hidden unless the intro is playing. */}
+            <div className="ws-cycle" aria-hidden="true">
+              {INTRO_WORDS.map(({ word, color }, i) => (
+                <span key={word} className={`ws-cycle-word ws-cycle-${i + 1}`} style={{ color }}>
+                  {word}
+                </span>
+              ))}
+            </div>
+            <div className="ws-wordmark" aria-hidden="true" style={{
+              fontFamily: 'var(--font-display)',
+              fontWeight: 800,
+              fontSize: 'clamp(3.25rem, 9.5vw, 6.5rem)',
+              lineHeight: 0.85,
+              color: 'var(--ink)',
+              display: 'inline-block',
+            }}>
+              {'WORKSHED'.split('').map((ch, i) => (
+                <span
+                  key={i}
+                  className={`ws-letter ws-letter-${i + 1}`}
+                  style={{ display: 'inline-block', letterSpacing: i < 7 ? '-0.035em' : '0' }}
+                >
+                  {ch}
+                </span>
+              ))}
+            </div>
           </div>
         </Link>
 
@@ -89,12 +110,13 @@ export default function Masthead() {
       <nav aria-label="Primary" style={{
         display: 'flex',
         justifyContent: 'center',
-        gap: '3rem',
+        flexWrap: 'wrap',
+        gap: '1rem 2.25rem',
         padding: '1.25rem 2.5rem 1.5rem',
         borderBottom: '2px solid var(--ink)',
       }}>
-        {NAV_LINKS.map(({ href, label }) => (
-          <Link key={href} href={href as '/' | '/garden' | '/tools' | '/field'} style={{
+        {NAV_LINKS.map(({ href, label, accent }) => (
+          <Link key={href} href={href} style={{
             fontFamily: 'var(--font-sans)',
             fontSize: '0.78rem',
             fontWeight: 500,
@@ -104,6 +126,7 @@ export default function Masthead() {
             textDecoration: 'none',
             position: 'relative',
             padding: '0.25rem 0',
+            ...(accent ? { ['--nav-accent']: accent } as React.CSSProperties : {}),
           }} className="ws-nav-link">
             {label}
           </Link>
@@ -111,7 +134,20 @@ export default function Masthead() {
       </nav>
 
       <style>{`
-        .ws-nav-link:hover { color: var(--green) !important; }
+        .ws-nav-link::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 2px;
+          background: var(--nav-accent, var(--green));
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: transform 0.25s var(--ease-default);
+        }
+        .ws-nav-link:hover { color: var(--nav-accent, var(--green)) !important; }
+        .ws-nav-link:hover::after { transform: scaleX(1); }
       `}</style>
     </header>
   )

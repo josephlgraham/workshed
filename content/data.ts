@@ -42,11 +42,11 @@ const data: SiteData = {
   ],
 
   latestNote: {
-    slug: 'artichokes-from-seed-week-3',
-    title: 'Starting artichokes from seed, three weeks in',
-    date: '2026-04-22',
+    slug: 'a-ram-pump-for-the-stream',
+    title: 'A ram pump for the stream',
+    date: '2026-05-31',
   },
-  totalNotes: 12,
+  totalNotes: 1,
 
   marqueeItems: [
     { emoji: '🌅', text: 'Morning' },

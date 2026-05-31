@@ -55,7 +55,11 @@ export default function ThemeToggle() {
         strokeLinecap="round" strokeLinejoin="round" style={{ width: '0.85rem', height: '0.85rem' }}>
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
       </svg>
-      <style>{`.ws-theme-btn:hover { border-color: var(--green) !important; color: var(--ink) !important; }`}</style>
+      <style>{`
+        .ws-theme-btn svg { transition: transform 0.4s var(--ease-bounce); }
+        .ws-theme-btn:hover { border-color: var(--green) !important; color: var(--ink) !important; }
+        .ws-theme-btn:hover svg { transform: rotate(-22deg) scale(1.12); }
+      `}</style>
     </button>
   )
 }

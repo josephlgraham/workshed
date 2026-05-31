@@ -157,6 +157,35 @@ body::before {
   50%       { transform: scale(1.05) rotate(2deg); }
 }
 
+/* ── Whimsy: a tasteful splash, not a circus ─────────────────────────────── */
+/* All of these are pure CSS transitions/animations, so the reduced-motion
+   block below neutralizes every one of them automatically. */
+
+/* Signature: PLAN / BUILD / GROW letters hop in sequence and bloom to accent */
+.ws-whimsy-l {
+  display: inline-block;
+  transition: transform 0.28s var(--ease-bounce), color 0.28s ease;
+}
+.ws-whimsy:hover .ws-whimsy-l {
+  transform: translateY(-0.12em);
+  color: var(--whimsy-accent, inherit);
+}
+
+/* Arrow nudge for "Enter Plan →" style links */
+.ws-arrow {
+  display: inline-block;
+  transition: transform 0.25s var(--ease-bounce);
+}
+a:hover > .ws-arrow,
+.ws-home-more:hover .ws-arrow { transform: translateX(4px); }
+
+/* Footer sunflower gives a little wiggle when you find it */
+@keyframes ws-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25%       { transform: rotate(-9deg); }
+  60%       { transform: rotate(7deg); }
+}
+
 /* ── Reduced-motion ──────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -197,6 +226,33 @@ body::before {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* Intro word cycle: each of PLAN / BUILD / GROW rises in, holds, lifts out */
+@keyframes ws-cycle-word {
+  0%   { opacity: 0; transform: translateY(16px) scale(0.95); }
+  22%  { opacity: 1; transform: translateY(0)    scale(1);    }
+  78%  { opacity: 1; transform: translateY(0)    scale(1);    }
+  100% { opacity: 0; transform: translateY(-16px) scale(1.03); }
+}
+
+/* The cycling words share the wordmark's footprint and stack in one cell so
+   they overlap, centered. Hidden by default — only the "play" state animates. */
+.ws-cycle {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.ws-cycle-word {
+  grid-area: 1 / 1;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(3.25rem, 9.5vw, 6.5rem);
+  line-height: 0.85;
+  letter-spacing: -0.035em;
+  opacity: 0;
+}
+
 /* PENDING state: elements are hidden before the client component fires.
    Prevents a flash of fully-visible masthead before the animation starts. */
 :root[data-intro="pending"] .ws-topbar,
@@ -213,45 +269,48 @@ body::before {
 :root[data-intro="pending"] .ws-nav-link { opacity: 0; }
 
 /* ── Timing (all relative to page load / theme-toggle trigger)
-     0ms   — topbar
-     160ms — W
-     220ms — O
-     280ms — R
-     340ms — K
-     400ms — S
-     460ms — H
-     520ms — E
-     580ms — D
-     660ms — dash
-     800ms — tagline
-     900ms — nav links (staggered 80ms each)             ── */
+     0ms    — topbar
+     100ms  — PLAN cycles in/out  (560ms)
+     520ms  — BUILD cycles in/out (560ms)
+     940ms  — GROW cycles in/out  (560ms)
+     1360ms — WORKSHED letters drop in (staggered 55ms each)
+     1820ms — dash
+     1960ms — tagline
+     2060ms — nav links (7, staggered 70ms each)          ── */
 
 :root[data-intro="play"] .ws-topbar {
   animation: ws-topbar-in 260ms ease-out 0ms both;
 }
 
-:root[data-intro="play"] .ws-letter-1 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 160ms both; }
-:root[data-intro="play"] .ws-letter-2 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 220ms both; }
-:root[data-intro="play"] .ws-letter-3 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 280ms both; }
-:root[data-intro="play"] .ws-letter-4 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 340ms both; }
-:root[data-intro="play"] .ws-letter-5 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 400ms both; }
-:root[data-intro="play"] .ws-letter-6 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 460ms both; }
-:root[data-intro="play"] .ws-letter-7 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 520ms both; }
-:root[data-intro="play"] .ws-letter-8 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 580ms both; }
+:root[data-intro="play"] .ws-cycle-1 { animation: ws-cycle-word 560ms ease-in-out  100ms both; }
+:root[data-intro="play"] .ws-cycle-2 { animation: ws-cycle-word 560ms ease-in-out  520ms both; }
+:root[data-intro="play"] .ws-cycle-3 { animation: ws-cycle-word 560ms ease-in-out  940ms both; }
+
+:root[data-intro="play"] .ws-letter-1 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 1360ms both; }
+:root[data-intro="play"] .ws-letter-2 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 1415ms both; }
+:root[data-intro="play"] .ws-letter-3 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 1470ms both; }
+:root[data-intro="play"] .ws-letter-4 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 1525ms both; }
+:root[data-intro="play"] .ws-letter-5 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 1580ms both; }
+:root[data-intro="play"] .ws-letter-6 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 1635ms both; }
+:root[data-intro="play"] .ws-letter-7 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 1690ms both; }
+:root[data-intro="play"] .ws-letter-8 { animation: ws-letter-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 1745ms both; }
 
 :root[data-intro="play"] .ws-masthead-dash {
   transform-origin: center;
-  animation: ws-dash-draw 380ms cubic-bezier(0.34, 1.56, 0.64, 1) 660ms both;
+  animation: ws-dash-draw 380ms cubic-bezier(0.34, 1.56, 0.64, 1) 1820ms both;
 }
 
 :root[data-intro="play"] .ws-tagline {
-  animation: ws-fade-up 280ms ease-out 800ms both;
+  animation: ws-fade-up 280ms ease-out 1960ms both;
 }
 
-:root[data-intro="play"] .ws-nav-link:nth-child(1) { animation: ws-fade-up 220ms ease-out  900ms both; }
-:root[data-intro="play"] .ws-nav-link:nth-child(2) { animation: ws-fade-up 220ms ease-out  980ms both; }
-:root[data-intro="play"] .ws-nav-link:nth-child(3) { animation: ws-fade-up 220ms ease-out 1060ms both; }
-:root[data-intro="play"] .ws-nav-link:nth-child(4) { animation: ws-fade-up 220ms ease-out 1140ms both; }
+:root[data-intro="play"] .ws-nav-link:nth-child(1) { animation: ws-fade-up 220ms ease-out 2060ms both; }
+:root[data-intro="play"] .ws-nav-link:nth-child(2) { animation: ws-fade-up 220ms ease-out 2130ms both; }
+:root[data-intro="play"] .ws-nav-link:nth-child(3) { animation: ws-fade-up 220ms ease-out 2200ms both; }
+:root[data-intro="play"] .ws-nav-link:nth-child(4) { animation: ws-fade-up 220ms ease-out 2270ms both; }
+:root[data-intro="play"] .ws-nav-link:nth-child(5) { animation: ws-fade-up 220ms ease-out 2340ms both; }
+:root[data-intro="play"] .ws-nav-link:nth-child(6) { animation: ws-fade-up 220ms ease-out 2410ms both; }
+:root[data-intro="play"] .ws-nav-link:nth-child(7) { animation: ws-fade-up 220ms ease-out 2480ms both; }
 
 /* ── Collapsible editorial sections ─────────────────────────────────────── */
 .ws-section > summary {
