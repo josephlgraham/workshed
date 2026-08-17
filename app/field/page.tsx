@@ -37,7 +37,7 @@ export default function FieldPage() {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'baseline',
-        marginBottom: '2.5rem',
+        marginBottom: '1rem',
         paddingBottom: '1rem',
         borderBottom: '1px solid var(--rule)',
       }}>
@@ -60,6 +60,24 @@ export default function FieldPage() {
           {NOTES.length} {NOTES.length === 1 ? 'entry' : 'entries'}
         </span>
       </div>
+
+      <p style={{
+        fontFamily: 'var(--font-serif)',
+        fontSize: '0.95rem',
+        lineHeight: 1.6,
+        color: 'var(--ink-muted)',
+        maxWidth: '70ch',
+        marginBottom: '2.5rem',
+      }}>
+        Got something worth sharing? Post it to the{' '}
+        <a
+          href="https://www.facebook.com/profile.php?id=61593387242361"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: 'var(--rust)' }}
+        >Facebook page</a>, or{' '}
+        <a href="/contact" style={{ color: 'var(--rust)' }}>send me a note</a>.
+      </p>
 
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {NOTES.map((note) => (
