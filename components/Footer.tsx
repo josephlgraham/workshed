@@ -20,6 +20,7 @@ export default function Footer() {
         <a href="/about" style={linkStyle} className="ws-footer-link">About</a>
         <a href="/contact" style={linkStyle} className="ws-footer-link">Contact</a>
         <a href="/feed.xml" style={linkStyle} className="ws-footer-link">RSS</a>
+        <a href="https://www.facebook.com/profile.php?id=61593387242361" target="_blank" rel="noopener noreferrer" style={linkStyle} className="ws-footer-link">Facebook</a>
       </div>
       <div>
         <strong style={{ display: 'block', color: 'var(--ink)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '0.75rem', fontSize: '0.68rem' }}>Sections</strong>

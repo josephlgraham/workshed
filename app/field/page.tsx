@@ -12,6 +12,14 @@ const SMALL_TAG_COLORS: Record<SmallTagKey, string> = {
 // Phase 1: single hardcoded entry. Phase 2: fetch from MDX files / Supabase.
 const NOTES: Array<{ slug: string; title: string; date: string; excerpt: string; tag: SmallTagKey; tagLabel: string }> = [
   {
+    slug: 'workshed-has-a-facebook-page-now',
+    title: 'Workshed has a Facebook page now',
+    date: '2026-08-16',
+    excerpt: 'A place to put the other half of it. What you’re growing, what worked, what didn’t.',
+    tag: 'building',
+    tagLabel: 'Announcement',
+  },
+  {
     slug: 'a-ram-pump-for-the-stream',
     title: 'A ram pump for the stream',
     date: '2026-05-31',

@@ -42,11 +42,11 @@ const data: SiteData = {
   ],
 
   latestNote: {
-    slug: 'a-ram-pump-for-the-stream',
-    title: 'A ram pump for the stream',
-    date: '2026-05-31',
+    slug: 'workshed-has-a-facebook-page-now',
+    title: 'Workshed has a Facebook page now',
+    date: '2026-08-16',
   },
-  totalNotes: 1,
+  totalNotes: 2,
 
   marqueeItems: [
     { emoji: '🌅', text: 'Morning' },

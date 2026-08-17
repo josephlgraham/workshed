@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import ShareButton from '@/components/ShareButton'
 
@@ -10,6 +11,68 @@ const NOTES: Record<string, {
   tagLabel: string
   body: React.ReactNode
 }> = {
+  'workshed-has-a-facebook-page-now': {
+    title: 'Workshed has a Facebook page now',
+    date: '2026-08-16',
+    tag: 'building',
+    tagLabel: 'Announcement',
+    body: (
+      <>
+        <p>
+          Workshed has a Facebook page now.
+        </p>
+
+        <figure style={{ margin: '0.25rem 0', width: '100%', alignSelf: 'stretch' }}>
+          <div style={{
+            position: 'relative',
+            width: '100%',
+            aspectRatio: '4 / 3',
+            overflow: 'hidden',
+            borderRadius: 2,
+          }}>
+            <Image
+              src="/photos/tomato_profile.jpg"
+              alt="Cherry tomatoes on the vine"
+              fill
+              sizes="(max-width: 680px) 100vw, 680px"
+              style={{ objectFit: 'cover' }}
+            />
+          </div>
+        </figure>
+
+        <p>
+          I put a lot of hours into these tools before anyone but me was using
+          them. Frost dates, mulch math, square foot planning, all worked out
+          because I needed the answer and didn&rsquo;t trust the version
+          online.
+        </p>
+        <p>
+          Now there&rsquo;s a place to put the other half of it. What you&rsquo;re
+          growing. What worked, what didn&rsquo;t. Whether the rainwater math
+          actually matched what showed up in your cistern.
+        </p>
+        <p>
+          I&rsquo;m not chasing followers. I want to see your beds, your weird
+          volunteer plants, the thing you built because a tool here got you
+          thinking. Tag it, post it, argue with me about compost ratios if you
+          want.
+        </p>
+        <p>
+          One page for now. Might add more later if it makes sense. No rush on
+          that.
+        </p>
+        <p>
+          Find it,{' '}
+          <a
+            href="https://www.facebook.com/profile.php?id=61593387242361"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: 'var(--rust)' }}
+          >follow it</a>, and show me what&rsquo;s growing.
+        </p>
+      </>
+    ),
+  },
   'a-ram-pump-for-the-stream': {
     title: 'A ram pump for the stream',
     date: '2026-05-31',

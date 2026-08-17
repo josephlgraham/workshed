@@ -150,6 +150,18 @@ export default function HomePage() {
             No electricity, no fuel. Just the weight of falling water pushing a little of it uphill. Building one from brass fittings and testing it on the creek.
           </p>
         </a>
+        <p style={{
+          fontFamily: 'var(--font-serif)', fontSize: '0.95rem', lineHeight: 1.6,
+          color: 'var(--ink-muted)', maxWidth: '70ch', marginTop: '1.5rem',
+        }}>
+          There&rsquo;s a place to trade notes and photos now too.{' '}
+          <a
+            href="https://www.facebook.com/profile.php?id=61593387242361"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: 'var(--rust)' }}
+          >Workshed&rsquo;s on Facebook.</a>
+        </p>
       </section>
 
       <style>{`

@@ -30,7 +30,7 @@ const STATIC_ROUTES = [
 ]
 
 // Keep in sync with NOTES in app/field/[slug]/page.tsx
-const FIELD_NOTE_SLUGS = ['a-ram-pump-for-the-stream']
+const FIELD_NOTE_SLUGS = ['workshed-has-a-facebook-page-now', 'a-ram-pump-for-the-stream']
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date()
